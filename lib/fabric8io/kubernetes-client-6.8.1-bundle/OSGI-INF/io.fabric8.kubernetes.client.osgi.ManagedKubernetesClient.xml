@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.2.0" name="io.fabric8.kubernetes.client.osgi.ManagedKubernetesClient" configuration-policy="require" activate="activate" deactivate="deactivate" configuration-pid="io.fabric8.kubernetes.client">
+    <service servicefactory="false">
+        <provide interface="io.fabric8.kubernetes.client.KubernetesClient"/>
+        <provide interface="io.fabric8.kubernetes.client.NamespacedKubernetesClient"/>
+    </service>
+    <reference interface="io.fabric8.kubernetes.client.impl.ResourceHandler" cardinality="0..n" policy="dynamic" bind="bindResourceHandler" unbind="unbindResourceHandler"/>
+    <reference interface="io.fabric8.kubernetes.client.OAuthTokenProvider" cardinality="0..1" policy="static" bind="bindOAuthTokenProvider" unbind="unbindOAuthTokenProvider" policy-option="greedy"/>
+    <implementation class="io.fabric8.kubernetes.client.osgi.ManagedKubernetesClient"/>
+</scr:component>

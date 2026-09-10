@@ -1,0 +1,13 @@
+Type;Name;Value;CPU;Memory;Restarts
+Component;botflow;2000_Q1_V1_abcde1;600m;1408Mi;0
+Component;engine;2000_Q1_V1_abcde2;;1400m;2560Mi;0
+Component;postgres;15.3;1600m;3000Mi;3
+Component;redis;7.0.0;50m;96Mi;3
+Component;ui;2000_Q1_V1_abcde3;;50m;128Mi;0
+TestInfo;Test start;2020-10-11T21:41:58Z
+TestInfo;Test maximum load;2020-10-11T21:42:48Z
+TestInfo;Test finish;2020-10-11T21:47:32Z
+Configuration;Agents;3
+Configuration;Agent RampUp;20
+Configuration;Clients;4
+Configuration;Client RampUp;15

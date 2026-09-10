@@ -1,0 +1,570 @@
+﻿Average Database query ET mean by transaction
+Average Create Agents ET pct90 by transaction
+tag;/api/v1/accounts/{accountId}/agents
+time;Average Create Agents ET pct90 by transaction
+1970-01-01T00:00:00Z;1245
+Average Log In requests ET pct90 by transaction
+tag;/app/login
+time;Average Log In requests ET pct90 by transaction
+1970-01-01T00:00:00Z;140
+tag;/auth/sign_in
+time;Average Log In requests ET pct90 by transaction
+1970-01-01T00:00:00Z;335
+tag;/auth/validate_token
+time;Average Log In requests ET pct90 by transaction
+1970-01-01T00:00:00Z;89
+tag;host/
+time;Average Log In requests ET pct90 by transaction
+1970-01-01T00:00:00Z;51
+Average Dashboard requests ET pct90 by transaction
+tag;/api/v1/accounts/{accountId}/
+time;Average Dashboard requests ET pct90  by transaction
+1970-01-01T00:00:00Z;69
+tag;/api/v1/accounts/{accountId}/custom_attribute_definitions
+time;Average Dashboard requests ET pct90  by transaction
+1970-01-01T00:00:00Z;77
+tag;/api/v1/accounts/{accountId}/labels
+time;Average Dashboard requests ET pct90  by transaction
+1970-01-01T00:00:00Z;127
+tag;/api/v1/accounts/{accountId}/notification_settings
+time;Average Dashboard requests ET pct90  by transaction
+1970-01-01T00:00:00Z;73
+tag;/api/v1/accounts/{accountId}/notification_settings/global
+time;Average Dashboard requests ET pct90  by transaction
+1970-01-01T00:00:00Z;51
+tag;/api/v1/profile/availability
+time;Average Dashboard requests ET pct90  by transaction
+1970-01-01T00:00:00Z;91
+tag;/auth/active_providers
+time;Average Dashboard requests ET pct90  by transaction
+1970-01-01T00:00:00Z;49
+tag;/brand-assets/logo-small.png
+time;Average Dashboard requests ET pct90  by transaction
+1970-01-01T00:00:00Z;42
+Average Workflow Actions ET pct90 by transaction
+tag;/api/v1/accounts/(accountId)/conversations/(conv_id)
+time;Average Workflow Actions ET pct90 by transaction
+1970-01-01T00:00:00Z;85.668
+tag;/api/v1/accounts/{accountId}/contacts/(cont_id)
+time;Average Workflow Actions ET pct90 by transaction
+1970-01-01T00:00:00Z;100.07600000000002
+tag;/api/v1/accounts/{accountId}/contacts/(cont_id)/conversations
+time;Average Workflow Actions ET pct90 by transaction
+1970-01-01T00:00:00Z;184.30800000000002
+tag;/api/v1/accounts/{accountId}/conversations/meta?status=open&assignee_type=me
+time;Average Workflow Actions ET pct90 by transaction
+1970-01-01T00:00:00Z;64.33809523809525
+tag;/api/v1/accounts/{accountId}/conversations/{conv_id}/labels
+time;Average Workflow Actions ET pct90 by transaction
+1970-01-01T00:00:00Z;109.56000000000002
+tag;/api/v1/accounts/{accountId}/conversations/{conv_id}/messages?before={before_number}
+time;Average Workflow Actions ET pct90 by transaction
+1970-01-01T00:00:00Z;109.3
+tag;/api/v1/accounts/{accountId}/conversations?status=open&assignee_type=me&page=1
+time;Average Workflow Actions ET pct90 by transaction
+1970-01-01T00:00:00Z;109.98205128205129
+tag;/api/v1/accounts/{accountId}/custom_attribute_definitions?filter=all
+time;Average Workflow Actions ET pct90 by transaction
+1970-01-01T00:00:00Z;72.82
+tag;/api/v1/accounts/{accountId}/inbox_members/{inboxId}
+time;Average Workflow Actions ET pct90 by transaction
+1970-01-01T00:00:00Z;76.98
+tag;check conversation status = open
+time;Average Workflow Actions ET pct90 by transaction
+1970-01-01T00:00:00Z;113.75833333333334
+tag;check conversation status = resolved
+time;Average Workflow Actions ET pct90 by transaction
+1970-01-01T00:00:00Z;102.82608695652173
+tag;toggle_status resolved
+time;Average Workflow Actions ET pct90 by transaction
+1970-01-01T00:00:00Z;805.317391304348
+tag;update_last_seen
+time;Average Workflow Actions ET pct90 by transaction
+1970-01-01T00:00:00Z;81.98292682926831
+Average Workflow Actions ET max by transaction
+tag;/api/v1/accounts/(accountId)/conversations/(conv_id)
+time;Average Workflow Actions ET max by transaction
+1970-01-01T00:00:00Z;125.16
+tag;/api/v1/accounts/{accountId}/contacts/(cont_id)
+time;Average Workflow Actions ET max by transaction
+1970-01-01T00:00:00Z;113.16
+tag;/api/v1/accounts/{accountId}/contacts/(cont_id)/conversations
+time;Average Workflow Actions ET max by transaction
+1970-01-01T00:00:00Z;229.88
+tag;/api/v1/accounts/{accountId}/conversations/meta?status=open&assignee_type=me
+time;Average Workflow Actions ET max by transaction
+1970-01-01T00:00:00Z;85
+tag;/api/v1/accounts/{accountId}/conversations/{conv_id}/labels
+time;Average Workflow Actions ET max by transaction
+1970-01-01T00:00:00Z;125.6
+tag;/api/v1/accounts/{accountId}/conversations/{conv_id}/messages?before={before_number}
+time;Average Workflow Actions ET max by transaction
+1970-01-01T00:00:00Z;139.28
+tag;/api/v1/accounts/{accountId}/conversations?status=open&assignee_type=me&page=1
+time;Average Workflow Actions ET max by transaction
+1970-01-01T00:00:00Z;166.51282051282053
+tag;/api/v1/accounts/{accountId}/custom_attribute_definitions?filter=all
+time;Average Workflow Actions ET max by transaction
+1970-01-01T00:00:00Z;79.56
+tag;/api/v1/accounts/{accountId}/inbox_members/{inboxId}
+time;Average Workflow Actions ET max by transaction
+1970-01-01T00:00:00Z;85.4
+tag;check conversation status = open
+time;Average Workflow Actions ET max by transaction
+1970-01-01T00:00:00Z;167.45833333333334
+tag;check conversation status = resolved
+time;Average Workflow Actions ET max by transaction
+1970-01-01T00:00:00Z;104.1304347826087
+tag;toggle_status resolved
+time;Average Workflow Actions ET max by transaction
+1970-01-01T00:00:00Z;860.6086956521739
+tag;update_last_seen
+time;Average Workflow Actions ET max by transaction
+1970-01-01T00:00:00Z;109.29268292682927
+Average Agent Messages ET mean by transaction
+tag;Agent - Reply msg 1
+time;Average Agent Messages ET mean by transaction
+1970-01-01T00:00:00Z;185.04198820043874
+tag;Agent - Reply msg 2
+time;Average Agent Messages ET mean by transaction
+1970-01-01T00:00:00Z;126.00737479568518
+tag;Agent - Reply msg 3
+time;Average Agent Messages ET mean by transaction
+1970-01-01T00:00:00Z;117.77046201915914
+tag;Agent - Reply msg 4
+time;Average Agent Messages ET mean by transaction
+1970-01-01T00:00:00Z;122.06827838631979
+tag;Agent - Reply msg 5
+time;Average Agent Messages ET mean by transaction
+1970-01-01T00:00:00Z;96.70694473672863
+tag;Agent - Welcome msg
+time;Average Agent Messages ET mean by transaction
+1970-01-01T00:00:00Z;174.82581615773526
+Average Agent Messages ET pct90 by transaction
+tag;Agent - Reply msg 1
+time;Average Agent Messages ET pct90 by transaction
+1970-01-01T00:00:00Z;357.52916666666664
+tag;Agent - Reply msg 2
+time;Average Agent Messages ET pct90 by transaction
+1970-01-01T00:00:00Z;264.05833333333334
+tag;Agent - Reply msg 3
+time;Average Agent Messages ET pct90 by transaction
+1970-01-01T00:00:00Z;193.7125
+tag;Agent - Reply msg 4
+time;Average Agent Messages ET pct90 by transaction
+1970-01-01T00:00:00Z;244.5173913043478
+tag;Agent - Reply msg 5
+time;Average Agent Messages ET pct90 by transaction
+1970-01-01T00:00:00Z;164.64347826086956
+tag;Agent - Welcome msg
+time;Average Agent Messages ET pct90 by transaction
+1970-01-01T00:00:00Z;419.0833333333334
+Average Agent Messages ET max by transaction
+tag;Agent - Reply msg 1
+time;Average Agent Messages ET max by transaction
+1970-01-01T00:00:00Z;387.5833333333333
+tag;Agent - Reply msg 2
+time;Average Agent Messages ET max by transaction
+1970-01-01T00:00:00Z;359
+tag;Agent - Reply msg 3
+time;Average Agent Messages ET max by transaction
+1970-01-01T00:00:00Z;228.95833333333334
+tag;Agent - Reply msg 4
+time;Average Agent Messages ET max by transaction
+1970-01-01T00:00:00Z;299.2608695652174
+tag;Agent - Reply msg 5
+time;Average Agent Messages ET max by transaction
+1970-01-01T00:00:00Z;187.30434782608697
+tag;Agent - Welcome msg
+time;Average Agent Messages ET max by transaction
+1970-01-01T00:00:00Z;496.6666666666667
+Average Client Messages ET mean by transaction
+tag;Bot - Agent request msg
+time;Average Client Messages ET mean by transaction
+1970-01-01T00:00:00Z;129.00210269831985
+tag;Bot - Entry msg
+time;Average Client Messages ET mean by transaction
+1970-01-01T00:00:00Z;57.84027849235093
+tag;Bot - Language menu msg
+time;Average Client Messages ET mean by transaction
+1970-01-01T00:00:00Z;61.38161599531862
+tag;Client - CSAT answer
+time;Average Client Messages ET mean by transaction
+1970-01-01T00:00:00Z;56.862317317943706
+tag;Client - Text msg 1
+time;Average Client Messages ET mean by transaction
+1970-01-01T00:00:00Z;53.007660644640765
+tag;Client - Text msg 2
+time;Average Client Messages ET mean by transaction
+1970-01-01T00:00:00Z;68.1388731961522
+tag;Client - Text msg 3
+time;Average Client Messages ET mean by transaction
+1970-01-01T00:00:00Z;57.5933621239809
+tag;Client - Text msg 4
+time;Average Client Messages ET mean by transaction
+1970-01-01T00:00:00Z;67.1017771523136
+tag;Client - Text msg 5
+time;Average Client Messages ET mean by transaction
+1970-01-01T00:00:00Z;52.69444390893113
+Average Client Messages ET pct90 by transaction
+tag;Bot - Agent request msg
+time;Average Client Messages ET pct90 by transaction
+1970-01-01T00:00:00Z;141.7375
+tag;Bot - Entry msg
+time;Average Client Messages ET pct90 by transaction
+1970-01-01T00:00:00Z;62.48235294117647
+tag;Bot - Language menu msg
+time;Average Client Messages ET pct90 by transaction
+1970-01-01T00:00:00Z;68.60000000000002
+tag;Client - CSAT answer
+time;Average Client Messages ET pct90 by transaction
+1970-01-01T00:00:00Z;85.01666666666668
+tag;Client - Text msg 1
+time;Average Client Messages ET pct90 by transaction
+1970-01-01T00:00:00Z;81.9625
+tag;Client - Text msg 2
+time;Average Client Messages ET pct90 by transaction
+1970-01-01T00:00:00Z;126.396
+tag;Client - Text msg 3
+time;Average Client Messages ET pct90 by transaction
+1970-01-01T00:00:00Z;93.10000000000001
+tag;Client - Text msg 4
+time;Average Client Messages ET pct90 by transaction
+1970-01-01T00:00:00Z;122.5291666666667
+tag;Client - Text msg 5
+time;Average Client Messages ET pct90 by transaction
+1970-01-01T00:00:00Z;75.02173913043478
+Average Client Messages ET max by transaction
+tag;Bot - Agent request msg
+time;Average Client Messages ET max by transaction
+1970-01-01T00:00:00Z;167.8125
+tag;Bot - Entry msg
+time;Average Client Messages ET max by transaction
+1970-01-01T00:00:00Z;72.11764705882354
+tag;Bot - Language menu msg
+time;Average Client Messages ET max by transaction
+1970-01-01T00:00:00Z;120.6470588235294
+tag;Client - CSAT answer
+time;Average Client Messages ET max by transaction
+1970-01-01T00:00:00Z;135.91666666666666
+tag;Client - Text msg 1
+time;Average Client Messages ET max by transaction
+1970-01-01T00:00:00Z;87
+tag;Client - Text msg 2
+time;Average Client Messages ET max by transaction
+1970-01-01T00:00:00Z;135.92
+tag;Client - Text msg 3
+time;Average Client Messages ET max by transaction
+1970-01-01T00:00:00Z;117.08333333333333
+tag;Client - Text msg 4
+time;Average Client Messages ET max by transaction
+1970-01-01T00:00:00Z;130.20833333333334
+tag;Client - Text msg 5
+time;Average Client Messages ET max by transaction
+1970-01-01T00:00:00Z;76
+Average Request Throughput of all requests by transaction
+tag;/api/v1/accounts/(accountId)/conversations/(conv_id)
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;1
+tag;/api/v1/accounts/{accountId}/
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;1
+tag;/api/v1/accounts/{accountId}/agents
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;1
+tag;/api/v1/accounts/{accountId}/contacts/(cont_id)
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;1
+tag;/api/v1/accounts/{accountId}/contacts/(cont_id)/conversations
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;1
+tag;/api/v1/accounts/{accountId}/conversations/meta?status=open&assignee_type=me
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;2.380952380952381
+tag;/api/v1/accounts/{accountId}/conversations/{conv_id}/labels
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;1
+tag;/api/v1/accounts/{accountId}/conversations/{conv_id}/messages?before={before_number}
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;1
+tag;/api/v1/accounts/{accountId}/conversations?status=open&assignee_type=me&page=1
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;1.3846153846153846
+tag;/api/v1/accounts/{accountId}/custom_attribute_definitions
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;1
+tag;/api/v1/accounts/{accountId}/custom_filters?filter_type=conversation
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;1
+tag;/api/v1/accounts/{accountId}/dialogs/labels?dialogId[]=(dialog_id)
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;1
+tag;/api/v1/accounts/{accountId}/inbox_members/{inboxId}
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;1
+tag;/api/v1/accounts/{accountId}/inboxes
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;1
+tag;/api/v1/accounts/{accountId}/labels
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;1
+tag;/api/v1/accounts/{accountId}/notification_settings
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;1
+tag;/api/v1/accounts/{accountId}/notification_settings/global
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;1
+tag;/api/v1/accounts/{accountId}/notifications/unread_count
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;1
+tag;/api/v1/accounts/{accountId}/teams
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;1
+tag;/api/v1/notification_subscriptions
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;1
+tag;/api/v1/profile/availability
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;1
+tag;/app/login
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;1
+tag;/auth/active_providers
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;1
+tag;/auth/sign_in
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;1
+tag;/auth/validate_token
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;1
+tag;Agent - Reply msg 1
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;1
+tag;Agent - Reply msg 2
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;1
+tag;Agent - Reply msg 3
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;1
+tag;Agent - Reply msg 4
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;1
+tag;Agent - Reply msg 5
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;1
+tag;Agent - Welcome msg
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;1
+tag;Bot - Agent request msg
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;3.25
+tag;Bot - Entry msg
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;3.235294117647059
+tag;Bot - Language menu msg
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;3.235294117647059
+tag;Client - CSAT answer
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;1
+tag;Client - Text msg 1
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;1
+tag;Client - Text msg 2
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;1
+tag;Client - Text msg 3
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;1
+tag;Client - Text msg 4
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;1
+tag;Client - Text msg 5
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;1
+tag;check conversation status = open
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;1
+tag;check conversation status = resolved
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;1
+tag;host/
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;1
+tag;toggle_status resolved
+time;Average Request Throughput of all requests by transaction
+1970-01-01T00:00:00Z;1
+Average Request Throughput of all Agent messages by transaction
+tag;Agent - Reply msg 1
+time;Average Request Throughput of all Agent messages by transaction
+1970-01-01T00:00:00Z;1
+tag;Agent - Reply msg 2
+time;Average Request Throughput of all Agent messages by transaction
+1970-01-01T00:00:00Z;1
+tag;Agent - Reply msg 3
+time;Average Request Throughput of all Agent messages by transaction
+1970-01-01T00:00:00Z;1
+tag;Agent - Reply msg 4
+time;Average Request Throughput of all Agent messages by transaction
+1970-01-01T00:00:00Z;1
+tag;Agent - Reply msg 5
+time;Average Request Throughput of all Agent messages by transaction
+1970-01-01T00:00:00Z;1
+tag;Agent - Welcome msg
+time;Average Request Throughput of all Agent messages by transaction
+1970-01-01T00:00:00Z;1
+Total Errors by transaction
+tag;Client - Text msg 5
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;Client - Text msg 4
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;Client - Text msg 3
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;Client - Text msg 2
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;Client - Text msg 1
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;Client - CSAT answer
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;Bot - Agent request msg
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;Bot - Entry msg
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;Bot - Language menu msg
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;Agent - Reply msg 1
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;Agent - Reply msg 2
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;Agent - Reply msg 3
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;Agent - Reply msg 4
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;Agent - Reply msg 5
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;Agent - Welcome msg
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;/api/v1/accounts/{accountId}/
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;/api/v1/accounts/{accountId}/agents
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;/api/v1/accounts/{accountId}/contacts/(cont_id)
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;/api/v1/accounts/{accountId}/contacts/(cont_id)/conversations
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;/api/v1/accounts/{accountId}/conversations/meta?status=open&assignee_type=me
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;/api/v1/accounts/(accountId)/conversations/(conv_id)
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;/api/v1/accounts/{accountId}/conversations/{conv_id}/labels
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;/api/v1/accounts/{accountId}/conversations/{conv_id}/messages?before={before_number}
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;/api/v1/accounts/{accountId}/conversations?status=open&assignee_type=me&page=1
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;/api/v1/accounts/{accountId}/dialogs/labels?dialogId[]=(dialog_id)
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;/api/v1/accounts/{accountId}/custom_attribute_definitions?filter=all
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;/api/v1/accounts/{accountId}/custom_filters?filter_type=conversation
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;/api/v1/accounts/{accountId}/inbox_members
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;/api/v1/accounts/{accountId}/inbox_members/{inboxId}
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;/api/v1/accounts/{accountId}/inboxes
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;/api/v1/accounts/{accountId}/labels
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;/api/v1/accounts/{accountId}/notification_settings
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;/api/v1/accounts/{accountId}/notification_settings/global
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;/api/v1/accounts/{accountId}/notifications/unread_count
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;/api/v1/accounts/{accountId}/teams
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;/api/v1/notification_subscriptions
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;/api/v1/accounts/{accountId}/teams/{teamId}/team_members
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;/api/v1/profile/availability
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;/app/login
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;/auth/validate_token
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;/auth/sign_in
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;/auth/active_providers
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;check conversation status = open
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;check conversation status = resolved
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;toggle_status resolved
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;update_last_seen
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;host/
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;DB - Get last conversation id
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;DB - Get last contact id
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;DB - Get agents tokens
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0
+tag;/brand-assets/logo-small.png
+time;Total Errors by transaction
+1970-01-01T00:00:00Z;0

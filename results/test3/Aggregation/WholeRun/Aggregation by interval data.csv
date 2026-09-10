@@ -1,0 +1,43 @@
+Average Database query ET mean
+time;Average Database query ET mean
+1970-01-01T00:00:00Z;965
+Average Create Agents ET pct90
+time;Average Create Agents ET pct90
+1970-01-01T00:00:00Z;670.5102040816327
+Average Log In requests ET pct90
+time;Average Log In requests ET pct90
+1970-01-01T00:00:00Z;149.75
+Average Dashboard requests ET pct90
+time;Average Dashboard requests ET pct90
+1970-01-01T00:00:00Z;64.25
+Average Workflow Actions ET pct90
+time;Average Workflow Actions ET pct90
+1970-01-01T00:00:00Z;138.3335820895522
+Average Workflow Actions ET max
+time;Average Workflow Actions ET max
+1970-01-01T00:00:00Z;165.1144278606965
+Average Agent Messages ET mean
+time;Average Agent Messages ET mean
+1970-01-01T00:00:00Z;137.83550346655034
+Average Agent Messages ET pct90
+time;Average Agent Messages ET pct90
+1970-01-01T00:00:00Z;268.23266666666666
+Average Agent Messages ET max
+time;Average Agent Messages ET max
+1970-01-01T00:00:00Z;318.1533333333333
+Average Client Messages ET mean
+time;Average Client Messages ET mean
+1970-01-01T00:00:00Z;66.6891112866626
+Average Client Messages ET pct90
+time;Average Client Messages ET pct90
+1970-01-01T00:00:00Z;95.4840579710145
+Average Client Messages ET max
+time;Average Client Messages ET max
+1970-01-01T00:00:00Z;113.98067632850241
+Average Request Throughput of all requests
+time;Average Request Throughput of all requests
+1970-01-01T00:00:00Z;1.2832512315270936
+Average Request Throughput of all Agent messages
+time;Average Request Throughput of all Agent messages
+1970-01-01T00:00:00Z;1
+Total Errors

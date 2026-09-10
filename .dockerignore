@@ -1,0 +1,49 @@
+# JMeter binaries (already in base image or will be mounted)
+bin/jmeter
+bin/jmeter.bat
+bin/jmeter.sh
+
+# Large generated directories
+results/
+backups/
+allure-results/
+allure-report/
+
+# Working directories
+AI_gen/
+.claude/
+.playwright-mcp/
+
+# Version control
+.git/
+.gitignore
+
+# System files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE files
+.vscode/
+.idea/
+*.iml
+
+# Documentation (keep reference but not needed in image)
+k6_docs/
+docs/
+
+# Environment files (will be injected)
+.env
+.env.local
+
+# Node/Python dependencies (if any)
+node_modules/
+__pycache__/
+*.pyc
+
+# License/readme files (optional, can trim image size)
+licenses/
+README*
+LICENSE*

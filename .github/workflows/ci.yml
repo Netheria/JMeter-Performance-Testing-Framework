@@ -1,0 +1,307 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+env:
+  JMETER_HEAP: 1g
+  CONCURRENT_AGENTS: 1
+  AGENT_RAMPUP: 10
+  CONCURRENT_CLIENTS: 1
+  CLIENT_RAMPUP: 10
+
+jobs:
+  validate:
+    name: Validate Configuration & Test Plans
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: false
+
+      - name: Validate JMeter test plans
+        run: |
+          echo "Validating JMeter test plan syntax..."
+          for file in flows/performance/*.jmx flows/functional/*.jmx flows/user-scenarios/*.jmx; do
+            if [ -f "$file" ]; then
+              echo "Checking $file"
+              grep -q "jmeterTestPlan" "$file" || { echo "ERROR: Invalid JMeter file format: $file"; exit 1; }
+              grep -q "TestPlan" "$file" || { echo "ERROR: Missing TestPlan element in $file"; exit 1; }
+            fi
+          done
+          echo "✓ All test plans have valid structure"
+
+      - name: Validate CSV data files
+        run: |
+          echo "Validating CSV files..."
+          for file in resources/*.csv; do
+            if [ -f "$file" ]; then
+              echo "Checking $file"
+              head -1 "$file" | grep -q ',' || { echo "ERROR: CSV file has no header: $file"; exit 1; }
+              wc -l "$file" | grep -qE '[1-9][0-9]+' || { echo "ERROR: CSV file is empty: $file"; exit 1; }
+            fi
+          done
+          echo "✓ All CSV files are valid"
+
+      - name: Validate YAML configuration files
+        run: |
+          echo "Validating YAML files..."
+          if [ -f "resources/dev-01-test.yaml" ]; then
+            # Basic YAML validation: check for proper indentation and structure
+            if ! grep -qE '^[a-zA-Z_]|^  [a-zA-Z_]|^    [a-zA-Z_]' resources/dev-01-test.yaml; then
+              echo "WARNING: YAML file may have formatting issues"
+            fi
+            echo "✓ YAML file structure appears valid"
+          fi
+
+      - name: Check for debug code in Groovy scripts
+        run: |
+          echo "Scanning for debug code..."
+          if grep -rn "System.out.println\|println\|debugger" flows/performance/conversationload_scripts/ 2>/dev/null; then
+            echo "ERROR: Found debug code in Groovy scripts"
+            exit 1
+          fi
+          echo "✓ No debug code detected"
+
+      - name: Verify required configuration files exist
+        run: |
+          echo "Verifying required files..."
+          [ -f "bin/test.properties" ] || { echo "ERROR: bin/test.properties not found"; exit 1; }
+          [ -f "flows/script_settings.txt" ] || { echo "ERROR: flows/script_settings.txt not found"; exit 1; }
+          [ -f "flows/performance/Transactions.txt" ] || { echo "WARNING: flows/performance/Transactions.txt not found"; }
+          echo "✓ All required files present"
+
+      - name: Scan test plans for debug samplers
+        run: |
+          echo "Scanning for debug samplers..."
+          if grep -l "DebugSampler\|ResultCollector" flows/**/*.jmx 2>/dev/null | grep -v "^\\."; then
+            echo "ERROR: Found debug samplers in test plans"
+            exit 1
+          fi
+          echo "✓ No debug samplers detected"
+
+  build-docker:
+    name: Build Docker Images
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: false
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push JMeter image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: .docker/jmeter/Dockerfile
+          push: true
+          tags: ghcr.io/netheria/jmeter-performance-testing-framework/jmeter:5.5-custom
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Validate docker-compose files
+        run: |
+          echo "Validating docker-compose files..."
+          docker compose config > /dev/null
+          docker compose -f docker-compose.ci.yml config > /dev/null
+          echo "✓ docker-compose files are valid"
+
+  smoke-test:
+    name: Smoke Test - Full Stack Integration
+    runs-on: ubuntu-latest
+    needs: [validate, build-docker]
+    timeout-minutes: 10
+    continue-on-error: true
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: false
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Start services
+        run: |
+          echo "Starting Docker Compose services..."
+          docker compose -f docker-compose.ci.yml up -d
+          echo "Waiting for InfluxDB to be healthy..."
+          for i in {1..30}; do
+            if curl -f http://localhost:8086/ping > /dev/null 2>&1; then
+              echo "✓ InfluxDB is ready"
+              break
+            fi
+            if [ $i -eq 30 ]; then
+              echo "ERROR: InfluxDB failed to become healthy"
+              exit 1
+            fi
+            echo "Waiting... ($i/30)"
+            sleep 1
+          done
+          docker compose -f docker-compose.ci.yml ps
+
+      - name: Verify InfluxDB connectivity
+        run: |
+          echo "Testing InfluxDB connectivity..."
+          curl -f http://localhost:8086/ping || { echo "ERROR: InfluxDB not responding"; exit 1; }
+          echo "✓ InfluxDB is healthy"
+
+      - name: Run minimal JMeter test
+        run: |
+          echo "Running smoke test..."
+          docker compose -f docker-compose.ci.yml run --rm jmeter -n \
+            -t "flows/performance/testapp.performance.conversationload.jmx" \
+            -l "results/smoke-test.csv" \
+            -J ConcurrentAgentNumber=1 \
+            -J AgentRampUp=10 \
+            -J ConcurrentClientNumber=1 \
+            -J ClientRampUp=10 \
+            -J InfluxdbUrl=http://influxdb:8086 \
+            -J BuildTag=ci-smoke-test \
+            -J CompareBuildTag=baseline \
+            -p "./bin/test.properties" \
+            -j jmeter-smoke.log || { echo "ERROR: JMeter test failed"; exit 1; }
+          echo "✓ Smoke test completed"
+
+      - name: Verify results were created
+        run: |
+          echo "Verifying test results..."
+          [ -f "results/smoke-test.csv" ] || { echo "ERROR: Results CSV not found"; exit 1; }
+          wc -l results/smoke-test.csv
+          head -5 results/smoke-test.csv
+          echo "✓ Results file created successfully"
+
+      - name: Verify InfluxDB received metrics
+        run: |
+          echo "Checking InfluxDB for metrics..."
+          MEASUREMENT_COUNT=$(curl -s "http://localhost:8086/query?db=jmeter_metrics&q=SHOW%20MEASUREMENTS" | grep -o '"name"' | wc -l)
+          if [ "$MEASUREMENT_COUNT" -gt 0 ]; then
+            echo "✓ InfluxDB received metrics ($MEASUREMENT_COUNT measurements found)"
+          else
+            echo "WARNING: No measurements found in InfluxDB (may be expected for minimal smoke test)"
+          fi
+
+      - name: Check JMeter logs
+        if: always()
+        run: |
+          echo "JMeter smoke test logs:"
+          if [ -f "jmeter-smoke.log" ]; then
+            tail -20 jmeter-smoke.log || true
+          fi
+
+      - name: Cleanup
+        if: always()
+        run: |
+          echo "Cleaning up Docker resources..."
+          docker compose -f docker-compose.ci.yml down -v || true
+          echo "✓ Cleanup completed"
+
+  doxygen-docs:
+    name: Generate Doxygen Documentation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: false
+
+      - name: Install Doxygen
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y doxygen graphviz
+
+      - name: Generate documentation
+        run: |
+          cd flows/performance
+          doxygen Doxyfile
+          echo "✓ Doxygen documentation generated"
+
+      - name: Create .nojekyll file
+        run: |
+          touch ./flows/performance/html/.nojekyll
+          echo "✓ .nojekyll created to skip Jekyll processing"
+
+      - name: Publish to GitHub Pages
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./flows/performance/html/
+
+  deploy-pages:
+    name: Deploy to GitHub Pages
+    needs: doxygen-docs
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy artifact
+        id: deployment
+        uses: actions/deploy-pages@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  docs-links:
+    name: Validate Documentation Links
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: false
+
+      - name: Check markdown links
+        run: |
+          echo "Validating markdown links..."
+          BROKEN_LINKS=0
+
+          for file in $(find docs -name "*.md" 2>/dev/null; echo "README.md"); do
+            if [ -f "$file" ]; then
+              echo "Checking $file"
+              # Extract markdown links: [text](file.md)
+              grep -o '\[.*\](.*\.md)' "$file" | while read -r link; do
+                # Extract the path from (...)
+                path=$(echo "$link" | sed 's/.*(\(.*\))/\1/')
+
+                # Skip HTTP links and anchor-only links
+                if [[ "$path" != http* ]] && [[ "$path" != "#"* ]]; then
+                  # Check if file exists
+                  if [ ! -f "$path" ]; then
+                    echo "ERROR: Broken link in $file: $path"
+                    BROKEN_LINKS=$((BROKEN_LINKS + 1))
+                  fi
+                fi
+              done
+            fi
+          done
+
+          if [ "$BROKEN_LINKS" -gt 0 ]; then
+            echo "ERROR: Found $BROKEN_LINKS broken links"
+            exit 1
+          fi
+          echo "✓ All documentation links are valid"

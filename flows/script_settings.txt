@@ -1,0 +1,34 @@
+>testapp.performance.conversationload<
+./bin/jmeter.sh -n -f \
+-t "/opt/testapp.tests/automation/jmeter/flows/performance/testapp.performance.conversationload.jmx" \
+-l "/opt/testapp.tests/automation/jmeter/results/testapp.performance.conversationload.stdout.csv" \
+-JHost=testapp-dev.k3s.test.example.com \
+-JNodeRed=testapp-dev.k3s.test.example.com \
+-JCataloguePath=/opt/ \
+-JRepDataPath=testapp.tests/automation/jmeter/ \
+-JApiAccessToken=hR7mN2kL5pQxW9vB3jD8eYaZ \
+-JaccountId=1 \
+-JinboxId=1 \
+-JteamId=4 \
+-JTelegramID=1 \
+-JDatabaseURL=jdbc:postgresql://192.0.1.10:65432/testapp-dev \
+-JDatabaseUser=testapp-dev-svc \
+-JDatabasePassword=demo_password_456 \
+-JConcurrentAgentNumber=20 \
+-JAgentRampUp=600 \
+-JConcurrentClientNumber=16 \
+-JClientRampUp=600 \
+-JInfluxdbUrl=http://127.0.0.1:8087 \
+-JBuildTag=2020_Q1_V2 \
+-JCompareBuildTag=2020_Q1_V1 \
+-JkubeConfigPath=/opt/testapp.tests/automation/jmeter/resources/ \
+-JkubeConfigYaml=dev-01-test.yaml \
+-JkubeDomainName=rancher.example.local \
+-JkubeServerIP=192.0.2.20 \
+-JkubeApiAuthToken=token-9xfKm:rStL2PqwVuXyZaBcDeFgHiJk \
+-Jnamespace=testapp-dev \
+-JpromDomainName=prometheus.k3s.test.example.local \
+-JpromServerIP=192.0.2.21 \
+-JpromStep=15
+>conversationload via .properties file<
+./bin/jmeter.sh -n -f -t "/opt/testapp.tests/automation/jmeter/flows/performance/testapp.performance.conversationload.jmx" -l "/opt/testapp.tests/automation/jmeter/results/testapp.performance.conversationload.stdout.csv" -p "./bin/test.properties"

@@ -1,0 +1,4 @@
+# GitHub Pages configuration
+# Skip Jekyll build - we're serving pre-built Doxygen HTML from artifact
+theme: null
+markdown: kramdown

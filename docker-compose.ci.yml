@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  jmeter:
+    image: ghcr.io/netheria/jmeter-performance-testing-framework/jmeter:5.5-custom
+    container_name: jmeter-ci
+    environment:
+      JMETER_HEAP: ${JMETER_HEAP:-1g}
+      CONCURRENT_AGENTS: ${CONCURRENT_AGENTS:-1}
+      AGENT_RAMPUP: ${AGENT_RAMPUP:-10}
+      CONCURRENT_CLIENTS: ${CONCURRENT_CLIENTS:-1}
+      CLIENT_RAMPUP: ${CLIENT_RAMPUP:-10}
+      DB_HOST: ${DB_HOST:-192.0.2.10}
+      DB_PORT: ${DB_PORT:-5432}
+      DB_USER: ${DB_USER:-testapp_user}
+      DB_PASSWORD: ${DB_PASSWORD:-demo_password}
+      DB_NAME: ${DB_NAME:-testapp_db}
+      INFLUXDB_URL: ${INFLUXDB_URL:-http://influxdb:8086}
+      INFLUXDB_DB: ${INFLUXDB_DB:-jmeter_metrics}
+      INFLUXDB_USER: ${INFLUXDB_USER:-jmeter}
+      INFLUXDB_PASSWORD: ${INFLUXDB_PASSWORD:-jmeter_password}
+      BUILD_TAG: ${BUILD_TAG:-ci-smoke-test}
+      COMPARE_BUILD_TAG: ${COMPARE_BUILD_TAG:-baseline}
+      API_ACCESS_TOKEN: ${API_ACCESS_TOKEN:-demo_api_token}
+    volumes:
+      - ./flows:/opt/jmeter/flows:ro
+      - ./resources:/opt/jmeter/resources:ro
+      - ./results:/opt/jmeter/results:rw
+      - ./bin/test.properties:/opt/jmeter/bin/test.properties:ro
+    networks:
+      - jmeter_stack
+    depends_on:
+      influxdb:
+        condition: service_healthy
+
+  influxdb:
+    image: influxdb:1.8
+    container_name: influxdb-ci
+    restart: no
+    ports:
+      - "8086:8086"
+    volumes:
+      - influxdb_ci_data:/var/lib/influxdb
+    environment:
+      - AUTH_ENABLED=false
+      - INFLUXDB_HTTP_AUTH_ENABLED=false
+      - INFLUXDB_ADMIN_USER=${INFLUXDB_USER:-jmeter}
+      - INFLUXDB_ADMIN_PASSWORD=${INFLUXDB_PASSWORD:-jmeter_password}
+      - INFLUXDB_DB=${INFLUXDB_DB:-jmeter_metrics}
+    networks:
+      - jmeter_stack
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8086/ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 5s
+
+networks:
+  jmeter_stack:
+    driver: bridge
+
+volumes:
+  influxdb_ci_data:
+    driver: local

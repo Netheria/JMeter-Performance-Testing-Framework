@@ -1,0 +1,59 @@
+Database query transactions:
+DB - Get last agent id data
+DB - Get last contact id
+DB - Get last conversation id
+DB - Get agents tokens
+
+Create Agents transactions:
+/api/v1/accounts/{accountId}/agents
+/api/v1/accounts/{accountId}/inbox_members
+/api/v1/accounts/{accountId}/teams/{teamId}/team_members
+
+Log In transactions:
+/app/login
+/auth/sign_in
+host/
+/auth/validate_token
+
+Dashboard transactions:
+/api/v1/accounts/{accountId}/
+/api/v1/accounts/{accountId}/notification_settings
+/api/v1/accounts/{accountId}/notification_settings/global
+/api/v1/accounts/{accountId}/labels
+/api/v1/accounts/{accountId}/custom_attribute_definitions
+/api/v1/profile/availability
+/auth/active_providers
+/brand-assets/logo-small.png
+
+Workflow Actions transactions:
+/api/v1/accounts/{accountId}/contacts/(cont_id)
+/api/v1/accounts/{accountId}/contacts/(cont_id)/conversations
+/api/v1/accounts/{accountId}/conversations/{conv_id}/messages?before={before_number}
+/api/v1/accounts/{accountId}/inbox_members/{inboxId}
+/api/v1/accounts/{accountId}/conversations/{conv_id}/labels
+/api/v1/accounts/{accountId}/custom_attribute_definitions?filter=all
+/api/v1/accounts/1/dialogs/labels?dialogId[]=(dialog_id)
+update_last_seen
+check conversation status = open
+/api/v1/accounts/{accountId}/conversations?status=open&amp;assignee_type=me&amp;page=1
+/api/v1/accounts/{accountId}/conversations/meta?status=open&amp;assignee_type=me
+/api/v1/accounts/(accountId)/conversations/(conv_id)
+toggle_status resolved
+check conversation status = resolved
+
+Messaging transactions:
+Agent - Welcome msg
+Agent - Reply msg 1
+Agent - Reply msg 2
+Agent - Reply msg 3
+Agent - Reply msg 5
+Agent - Reply msg 4
+Bot - Agent request msg
+Bot - Language menu msg
+Bot - Entry msg
+Client - CSAT answer
+Client - Text msg 1
+Client - Text msg 2
+Client - Text msg 3
+Client - Text msg 4
+Client - Text msg 5

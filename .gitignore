@@ -1,0 +1,53 @@
+# JMeter Distribution (stock binaries - large, redistributable)
+bin/*
+!bin/test.properties
+printable_docs/
+licenses/
+extras/
+
+# JMeter Backups (auto-backups on save)
+backups/
+
+# Test Results & Artifacts (ignore generated runs, keep reference examples)
+results/*
+!results/test2/
+!results/test3/
+allure-results/
+allure-report/
+
+# Docker & Container Runtime
+.env
+.env.local
+docker-compose.override.yml
+influxdb/data/
+chronograf/data/
+
+# Logs
+*.log
+jmeter.log
+jmeter-*.log
+
+# System & IDE Files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.tmp
+node_modules/
+.idea/
+.vscode/
+*.iml
+
+# Runtime state & temporary files
+*.tmp
+*.bak
+~*
+
+# Doxygen generated documentation
+flows/performance/html/
+flows/performance/latex/
+flows/performance/doxygen_sqlite3.db
+
+# Build artifacts
+build/
+dist/

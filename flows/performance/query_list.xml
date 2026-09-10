@@ -1,0 +1,2818 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <type>
+		<category>Metrics</category>
+        <graph>
+			<name>Database requests AND Create Agent</name>
+			<group>
+				<name>Database query ET mean</name>
+				<query><![CDATA[
+					SELECT mean("avg") AS "Database query ET mean" 
+					FROM "db0"."autogen"."jmeter" 
+					WHERE time > 'dateTimeStart' 
+						AND time < 'dateTimeEnd' 
+						AND ("transaction"='DB - Get last agent' 
+							OR "transaction"='DB - Get last contact id' 
+							OR "transaction"='DB - Get last conversation id' 
+							OR "transaction"='DB - Get agents tokens') 
+					GROUP BY time(interval) 
+					FILL(null)
+				]]></query>
+			</group>
+			<group>
+				<name>Create Agents ET pct90</name>
+				<query><![CDATA[
+					SELECT mean("pct90.0") AS "Create Agents ET pct90" 
+					FROM "db0"."autogen"."jmeter" 
+					WHERE time > 'dateTimeStart' 
+						AND time < 'dateTimeEnd' 
+						AND ("transaction"='/api/v1/accounts/{accountId}/agents' 
+							OR "transaction"='/api/v1/accounts/{accountId}/inbox_members' 
+							OR "transaction"='/api/v1/accounts/{accountId}/teams/{teamId}/team_members') 
+					GROUP BY time(interval) 
+					FILL(null)
+				]]></query>
+			</group>
+			<group>
+				<name>Database query ET mean spread</name>
+				<query><![CDATA[
+					SELECT SPREAD("avg") AS "Database query ET mean spread" 
+					FROM "db0"."autogen"."jmeter" 
+					WHERE time > 'dateTimeStart' 
+						AND time < 'dateTimeEnd' 
+						AND ("transaction"='DB - Get last agent' 
+							OR "transaction"='DB - Get last contact id' 
+							OR "transaction"='DB - Get last conversation id' 
+							OR "transaction"='DB - Get agents tokens') 
+					GROUP BY time(interval) 
+					FILL(null)
+				]]></query>
+			</group>
+			<group>
+				<name>Create Agents ET pct90 spread</name>
+				<query><![CDATA[
+					SELECT SPREAD("pct90.0") AS "Create Agents ET pct90 spread" 
+					FROM "db0"."autogen"."jmeter" 
+					WHERE time > 'dateTimeStart' 
+						AND time < 'dateTimeEnd' 
+						AND ("transaction"='/api/v1/accounts/{accountId}/agents' 
+							OR "transaction"='/api/v1/accounts/{accountId}/inbox_members' 
+							OR "transaction"='/api/v1/accounts/{accountId}/teams/{teamId}/team_members') 
+					GROUP BY time(interval) 
+					FILL(null)
+				]]></query>
+			</group>
+        </graph>
+        <graph>
+			<name>Agent Log In AND Dashboard entry</name>
+			<group>
+				<name>Log In requests ET pct90</name>
+				<query><![CDATA[
+					SELECT mean("pct90.0") AS "Log In requests ET pct90" 
+					FROM "db0"."autogen"."jmeter" 
+					WHERE time > 'dateTimeStart' 
+						AND time < 'dateTimeEnd' 
+						AND ("transaction"='/app/login' 
+							OR "transaction"='/auth/sign_in' 
+							OR "transaction"='host/' 
+							OR "transaction"='/auth/validate_token') 
+					GROUP BY time(interval) FILL(null)
+				]]></query>
+			</group>
+			<group>
+				<name>Dashboard requests ET pct90</name>
+				<query><![CDATA[
+					SELECT sum("mean_pct90.0") AS "Dashboard requests ET pct90" 
+					FROM (SELECT mean("pct90.0") AS "mean_pct90.0" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='/api/v1/accounts/{accountId}/' 
+								OR "transaction"='/api/v1/accounts/{accountId}/notification_settings' 
+								OR "transaction"='/api/v1/accounts/{accountId}/notification_settings/global' 
+								OR "transaction"='/api/v1/accounts/{accountId}/labels' 
+								OR "transaction"='/api/v1/accounts/{accountId}/custom_attribute_definitions' 
+								OR "transaction"='/api/v1/profile/availability' 
+								OR "transaction"='/auth/active_providers' 
+								OR "transaction"='/brand-assets/logo-small.png') 
+						GROUP BY time(7s), "transaction" 
+						FILL(null)) 
+					GROUP BY time(interval) 
+					Fill(linear)
+				]]></query>
+			</group>
+			<group>
+				<name>Log In requests ET pct90 spread</name>
+				<query><![CDATA[
+					SELECT SPREAD("pct90.0") AS "Log In requests ET pct90 spread" 
+					FROM "db0"."autogen"."jmeter" 
+					WHERE time > 'dateTimeStart' 
+						AND time < 'dateTimeEnd' 
+						AND ("transaction"='/app/login' 
+							OR "transaction"='/auth/sign_in' 
+							OR "transaction"='host/' 
+							OR "transaction"='/auth/validate_token') 
+					GROUP BY time(interval) FILL(null)
+				]]></query>
+			</group>
+			<group>
+				<name>Dashboard requests ET pct90 spread</name>
+				<query><![CDATA[
+					SELECT sum("spread_pct90.0") AS "Dashboard requests ET pct90 spread" 
+					FROM (SELECT SPREAD("pct90.0") AS "spread_pct90.0" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='/api/v1/accounts/{accountId}/' 
+								OR "transaction"='/api/v1/accounts/{accountId}/notification_settings' 
+								OR "transaction"='/api/v1/accounts/{accountId}/notification_settings/global' 
+								OR "transaction"='/api/v1/accounts/{accountId}/labels' 
+								OR "transaction"='/api/v1/accounts/{accountId}/custom_attribute_definitions' 
+								OR "transaction"='/api/v1/profile/availability' 
+								OR "transaction"='/auth/active_providers' 
+								OR "transaction"='/brand-assets/logo-small.png') 
+						GROUP BY time(7s), "transaction" 
+						FILL(null)) 
+					GROUP BY time(interval) 
+					Fill(linear)
+				]]></query>
+			</group>
+        </graph>
+        <graph>
+			<name>Agents Workflow Actions</name>
+			<group>
+				<name>Workflow Actions</name>
+				<query><![CDATA[
+					SELECT mean("max") AS "Workflow Actions ET max", 
+						mean("pct90.0") AS "Workflow Actions ET pct90" 
+					FROM "db0"."autogen"."jmeter" 
+					WHERE time > 'dateTimeStart' 
+						AND time < 'dateTimeEnd' 
+						AND ("transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)' 
+							OR "transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)/conversations' 
+							OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/messages?before={before_number}' 
+							OR "transaction"='/api/v1/accounts/{accountId}/inbox_members/{inboxId}' 
+							OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/labels' 
+							OR "transaction"='/api/v1/accounts/{accountId}/custom_attribute_definitions?filter=all' 
+							OR "transaction"='/api/v1/accounts/1/dialogs/labels?dialogId[]=(dialog_id)' 
+							OR "transaction"='update_last_seen' 
+							OR "transaction"='check conversation status = open' 
+							OR "transaction"='/api/v1/accounts/{accountId}/conversations?status=open&assignee_type=me&page=1' 
+							OR "transaction"='/api/v1/accounts/{accountId}/conversations/meta?status=open&assignee_type=me' 
+							OR "transaction"='/api/v1/accounts/(accountId)/conversations/(conv_id)' 
+							OR "transaction"='toggle_status resolved' 
+							OR "transaction"='check conversation status = resolved') 
+					GROUP BY time(interval) 
+					FILL(null)
+				]]></query>
+			</group>
+			<group>
+				<name>Workflow Actions spread</name>
+				<query><![CDATA[
+					SELECT SPREAD("max") AS "Workflow Actions ET max spread", 
+						SPREAD("pct90.0") AS "Workflow Actions ET pct90 spread" 
+					FROM "db0"."autogen"."jmeter" 
+					WHERE time > 'dateTimeStart' 
+						AND time < 'dateTimeEnd' 
+						AND ("transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)' 
+							OR "transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)/conversations' 
+							OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/messages?before={before_number}' 
+							OR "transaction"='/api/v1/accounts/{accountId}/inbox_members/{inboxId}' 
+							OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/labels' 
+							OR "transaction"='/api/v1/accounts/{accountId}/custom_attribute_definitions?filter=all' 
+							OR "transaction"='/api/v1/accounts/1/dialogs/labels?dialogId[]=(dialog_id)' 
+							OR "transaction"='update_last_seen' 
+							OR "transaction"='check conversation status = open' 
+							OR "transaction"='/api/v1/accounts/{accountId}/conversations?status=open&assignee_type=me&page=1' 
+							OR "transaction"='/api/v1/accounts/{accountId}/conversations/meta?status=open&assignee_type=me' 
+							OR "transaction"='/api/v1/accounts/(accountId)/conversations/(conv_id)' 
+							OR "transaction"='toggle_status resolved' 
+							OR "transaction"='check conversation status = resolved') 
+					GROUP BY time(interval) 
+					FILL(null)
+				]]></query>
+			</group>
+        </graph>
+        <graph>
+			<name>Concurrent Agents and Clients - send message</name>
+			<group>
+				<name>Agent Messages</name>
+				<query><![CDATA[
+					SELECT mean("avg") AS "Agent Messages ET mean", 
+						mean("max") AS "Agent Messages ET max", 
+						mean("pct90.0") AS "Agent Messages ET pct90" 
+					FROM "db0"."autogen"."jmeter" 
+					WHERE time > 'dateTimeStart' 
+						AND time < 'dateTimeEnd' 
+						AND ("transaction"='Agent - Reply msg 1' 
+							OR "transaction"='Agent - Reply msg 2' 
+							OR "transaction"='Agent - Reply msg 3' 
+							OR "transaction"='Agent - Reply msg 5' 
+							OR "transaction"='Agent - Reply msg 4' 
+							OR "transaction"='Agent - Welcome msg') 
+						AND ("statut"='ko' 
+							OR "statut"='ok') 
+					GROUP BY time(interval) 
+					FILL(null)
+				]]></query>
+			</group>
+			<group>
+				<name>Client Messages</name>
+				<query><![CDATA[
+					SELECT mean("avg") AS "Client Messages ET mean", 
+						mean("max") AS "Client Messages ET max", 
+						mean("pct90.0") AS "Client Messages ET pct90" 
+					FROM "db0"."autogen"."jmeter" 
+					WHERE time > 'dateTimeStart' 
+						AND time < 'dateTimeEnd' 
+						AND ("transaction"='Bot - Agent request msg' 
+							OR "transaction"='Bot - Language menu msg' 
+							OR "transaction"='Bot - Entry msg' 
+							OR "transaction"='Client - CSAT answer' 
+							OR "transaction"='Client - Text msg 1' 
+							OR "transaction"='Client - Text msg 2' 
+							OR "transaction"='Client - Text msg 3' 
+							OR "transaction"='Client - Text msg 4' 
+							OR "transaction"='Client - Text msg 5') 
+						AND ("statut"='ko' 
+							OR "statut"='ok') 
+					GROUP BY time(interval) 
+					FILL(null)
+				]]></query>
+			</group>
+			<group>
+				<name>Agent Messages spread</name>
+				<query><![CDATA[
+					SELECT SPREAD("avg") AS "Agent Messages ET mean spread", 
+						SPREAD("max") AS "Agent Messages ET max spread", 
+						SPREAD("pct90.0") AS "Agent Messages ET pct90 spread" 
+					FROM "db0"."autogen"."jmeter" 
+					WHERE time > 'dateTimeStart' 
+						AND time < 'dateTimeEnd' 
+						AND ("transaction"='Agent - Reply msg 1' 
+							OR "transaction"='Agent - Reply msg 2' 
+							OR "transaction"='Agent - Reply msg 3' 
+							OR "transaction"='Agent - Reply msg 5' 
+							OR "transaction"='Agent - Reply msg 4' 
+							OR "transaction"='Agent - Welcome msg') 
+						AND ("statut"='ko' 
+							OR "statut"='ok') 
+					GROUP BY time(interval) 
+					FILL(null)
+				]]></query>
+			</group>
+			<group>
+				<name>Client Messages spread</name>
+				<query><![CDATA[
+					SELECT SPREAD("avg") AS "Client Messages ET mean spread", 
+						SPREAD("max") AS "Client Messages ET max spread", 
+						SPREAD("pct90.0") AS "Client Messages ET pct90 spread" 
+					FROM "db0"."autogen"."jmeter" 
+					WHERE time > 'dateTimeStart' 
+						AND time < 'dateTimeEnd' 
+						AND ("transaction"='Bot - Agent request msg' 
+							OR "transaction"='Bot - Language menu msg' 
+							OR "transaction"='Bot - Entry msg' 
+							OR "transaction"='Client - CSAT answer' 
+							OR "transaction"='Client - Text msg 1' 
+							OR "transaction"='Client - Text msg 2' 
+							OR "transaction"='Client - Text msg 3' 
+							OR "transaction"='Client - Text msg 4' 
+							OR "transaction"='Client - Text msg 5') 
+						AND ("statut"='ko' 
+							OR "statut"='ok') 
+					GROUP BY time(interval) 
+					FILL(null)
+				]]></query>
+			</group>
+        </graph>
+        <graph>
+			<name>Throughput AND Active Threads AND Errors</name>
+			<group>
+				<name>Active Agents</name>
+				<query><![CDATA[
+					SELECT mean("activeThreads") AS "Active Agents" 
+					FROM "db0"."autogen"."jmeter_threads" 
+					WHERE time > 'dateTimeStart' 
+						AND time < 'dateTimeEnd' 
+						AND "groupName"='Concurrent Agents' 
+					GROUP BY time(interval) 
+					FILL(null)
+				]]></query>
+			</group>
+			<group>
+				<name>Active Clients</name>
+				<query><![CDATA[
+					SELECT mean("activeThreads") AS "Active Clients" 
+					FROM "db0"."autogen"."jmeter_threads" 
+					WHERE time > 'dateTimeStart' 
+						AND time < 'dateTimeEnd' 
+						AND "groupName"='Concurrent Clients' 
+					GROUP BY time(interval) 
+					FILL(null)
+				]]></query>
+			</group>
+			<group>
+				<name>Request Throughput of all requests</name>
+				<query><![CDATA[
+					SELECT mean("hit") AS "Request Throughput of all requests" 
+					FROM "db0"."autogen"."jmeter" 
+					WHERE time > 'dateTimeStart' 
+						AND time < 'dateTimeEnd' 
+						AND ("transaction"='/api/v1/accounts/{accountId}/' 
+							OR "transaction"='/api/v1/accounts/{accountId}/agents' 
+							OR "transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)' 
+							OR "transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)/conversations' 
+							OR "transaction"='/api/v1/accounts/{accountId}/conversations/meta?status=open&assignee_type=me' 
+							OR "transaction"='/api/v1/accounts/(accountId)/conversations/(conv_id)' 
+							OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/labels' 
+							OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/messages?before={before_number}' 
+							OR "transaction"='/api/v1/accounts/{accountId}/conversations?status=open&assignee_type=me&page=1' 
+							OR "transaction"='/api/v1/accounts/{accountId}/dialogs/labels?dialogId[]=(dialog_id)' 
+							OR "transaction"='/api/v1/accounts/{accountId}/custom_attribute_definitions' 
+							OR "transaction"='/api/v1/accounts/{accountId}/custom_filters?filter_type=conversation' 
+							OR "transaction"='/api/v1/accounts/{accountId}/inbox_members' 
+							OR "transaction"='/api/v1/accounts/{accountId}/inbox_members/{inboxId}' 
+							OR "transaction"='/api/v1/accounts/{accountId}/labels' 
+							OR "transaction"='/api/v1/accounts/{accountId}/inboxes' 
+							OR "transaction"='/api/v1/accounts/{accountId}/notification_settings' 
+							OR "transaction"='/api/v1/accounts/{accountId}/notification_settings/global' 
+							OR "transaction"='/api/v1/accounts/{accountId}/notifications/unread_count' 
+							OR "transaction"='/api/v1/accounts/{accountId}/teams' 
+							OR "transaction"='/api/v1/accounts/{accountId}/teams/{teamId}/team_members' 
+							OR "transaction"='/api/v1/notification_subscriptions' 
+							OR "transaction"='/api/v1/profile/availability' 
+							OR "transaction"='/app/login' 
+							OR "transaction"='/auth/active_providers' 
+							OR "transaction"='/auth/sign_in' 
+							OR "transaction"='/auth/validate_token' 
+							OR "transaction"='Agent - Reply msg 1' 
+							OR "transaction"='Agent - Reply msg 2' 
+							OR "transaction"='Agent - Reply msg 3' 
+							OR "transaction"='Agent - Reply msg 4' 
+							OR "transaction"='Agent - Reply msg 5' 
+							OR "transaction"='Agent - Welcome msg' 
+							OR "transaction"='Bot - Agent request msg' 
+							OR "transaction"='Bot - Entry msg' 
+							OR "transaction"='Bot - Language menu msg' 
+							OR "transaction"='Client - CSAT answer' 
+							OR "transaction"='Client - Text msg 1' 
+							OR "transaction"='Client - Text msg 2' 
+							OR "transaction"='Client - Text msg 3' 
+							OR "transaction"='Client - Text msg 4' 
+							OR "transaction"='Client - Text msg 5' 
+							OR "transaction"='check conversation status = open' 
+							OR "transaction"='check conversation status = resolved' 
+							OR "transaction"='host/' 
+							OR "transaction"='toggle_status resolved' 
+							OR "transaction"='update_last_seen') 
+					GROUP BY time(interval) 
+					FILL(null)
+				]]></query>
+			</group>
+			<group>
+				<name>Request Throughput of all requests spread</name>
+				<query><![CDATA[
+					SELECT SPREAD("hit") AS "Request Throughput of all requests spread" 
+					FROM "db0"."autogen"."jmeter" 
+					WHERE time > 'dateTimeStart' 
+						AND time < 'dateTimeEnd' 
+						AND ("transaction"='/api/v1/accounts/{accountId}/' 
+							OR "transaction"='/api/v1/accounts/{accountId}/agents' 
+							OR "transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)' 
+							OR "transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)/conversations' 
+							OR "transaction"='/api/v1/accounts/{accountId}/conversations/meta?status=open&assignee_type=me' 
+							OR "transaction"='/api/v1/accounts/(accountId)/conversations/(conv_id)' 
+							OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/labels' 
+							OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/messages?before={before_number}' 
+							OR "transaction"='/api/v1/accounts/{accountId}/conversations?status=open&assignee_type=me&page=1' 
+							OR "transaction"='/api/v1/accounts/{accountId}/dialogs/labels?dialogId[]=(dialog_id)' 
+							OR "transaction"='/api/v1/accounts/{accountId}/custom_attribute_definitions' 
+							OR "transaction"='/api/v1/accounts/{accountId}/custom_filters?filter_type=conversation' 
+							OR "transaction"='/api/v1/accounts/{accountId}/inbox_members' 
+							OR "transaction"='/api/v1/accounts/{accountId}/inbox_members/{inboxId}' 
+							OR "transaction"='/api/v1/accounts/{accountId}/labels' 
+							OR "transaction"='/api/v1/accounts/{accountId}/inboxes' 
+							OR "transaction"='/api/v1/accounts/{accountId}/notification_settings' 
+							OR "transaction"='/api/v1/accounts/{accountId}/notification_settings/global' 
+							OR "transaction"='/api/v1/accounts/{accountId}/notifications/unread_count' 
+							OR "transaction"='/api/v1/accounts/{accountId}/teams' 
+							OR "transaction"='/api/v1/accounts/{accountId}/teams/{teamId}/team_members' 
+							OR "transaction"='/api/v1/notification_subscriptions' 
+							OR "transaction"='/api/v1/profile/availability' 
+							OR "transaction"='/app/login' 
+							OR "transaction"='/auth/active_providers' 
+							OR "transaction"='/auth/sign_in' 
+							OR "transaction"='/auth/validate_token' 
+							OR "transaction"='Agent - Reply msg 1' 
+							OR "transaction"='Agent - Reply msg 2' 
+							OR "transaction"='Agent - Reply msg 3' 
+							OR "transaction"='Agent - Reply msg 4' 
+							OR "transaction"='Agent - Reply msg 5' 
+							OR "transaction"='Agent - Welcome msg' 
+							OR "transaction"='Bot - Agent request msg' 
+							OR "transaction"='Bot - Entry msg' 
+							OR "transaction"='Bot - Language menu msg' 
+							OR "transaction"='Client - CSAT answer' 
+							OR "transaction"='Client - Text msg 1' 
+							OR "transaction"='Client - Text msg 2' 
+							OR "transaction"='Client - Text msg 3' 
+							OR "transaction"='Client - Text msg 4' 
+							OR "transaction"='Client - Text msg 5' 
+							OR "transaction"='check conversation status = open' 
+							OR "transaction"='check conversation status = resolved' 
+							OR "transaction"='host/' 
+							OR "transaction"='toggle_status resolved' 
+							OR "transaction"='update_last_seen') 
+					GROUP BY time(interval) 
+					FILL(null)
+				]]></query>
+			</group>
+			<group>
+				<name>Request Throughput of all Agent messages by transaction</name>
+				<query><![CDATA[
+					SELECT mean("hit") AS "Request Throughput of all Agent messages by transaction" 
+					FROM "db0"."autogen"."jmeter" 
+					WHERE time > 'dateTimeStart' 
+						AND time < 'dateTimeEnd' 
+						AND ( "transaction"='Agent - Reply msg 1' 
+							OR "transaction"='Agent - Reply msg 2' 
+							OR "transaction"='Agent - Reply msg 3' 
+							OR "transaction"='Agent - Reply msg 4' 
+							OR "transaction"='Agent - Reply msg 5' 
+							OR "transaction"='Agent - Welcome msg') 
+					GROUP BY time(interval) 
+					FILL(null)
+				]]></query>
+			</group>
+			<group>
+				<name>Request Throughput of all Agent messages spread by transaction</name>
+				<query><![CDATA[
+					SELECT SPREAD("hit") AS "Request Throughput of all Agent messages spread by transaction" 
+					FROM "db0"."autogen"."jmeter" 
+					WHERE time > 'dateTimeStart' 
+						AND time < 'dateTimeEnd' 
+						AND ( "transaction"='Agent - Reply msg 1' 
+							OR "transaction"='Agent - Reply msg 2' 
+							OR "transaction"='Agent - Reply msg 3' 
+							OR "transaction"='Agent - Reply msg 4' 
+							OR "transaction"='Agent - Reply msg 5' 
+							OR "transaction"='Agent - Welcome msg') 
+					GROUP BY time(interval) 
+					FILL(null)
+				]]></query>
+			</group>
+			<group>
+				<name>Total Errors</name>
+				<query><![CDATA[
+					SELECT mean("hit") AS "Total Errors" 
+					FROM "db0"."autogen"."jmeter" 
+					WHERE time > 'dateTimeStart' 
+						AND time < 'dateTimeEnd' 
+						AND "statut"='ko' 
+						AND ("transaction"='Client - Text msg 5' 
+							OR "transaction"='Client - Text msg 4' 
+							OR "transaction"='Client - Text msg 3' 
+							OR "transaction"='Client - Text msg 2' 
+							OR "transaction"='Client - Text msg 1' 
+							OR "transaction"='Client - CSAT answer' 
+							OR "transaction"='Bot - Agent request msg' 
+							OR "transaction"='Bot - Entry msg' 
+							OR "transaction"='Bot - Language menu msg' 
+							OR "transaction"='Agent - Reply msg 1' 
+							OR "transaction"='Agent - Reply msg 2' 
+							OR "transaction"='Agent - Reply msg 3' 
+							OR "transaction"='Agent - Reply msg 4' 
+							OR "transaction"='Agent - Reply msg 5' 
+							OR "transaction"='Agent - Welcome msg' 
+							OR "transaction"='/api/v1/accounts/{accountId}/' 
+							OR "transaction"='/api/v1/accounts/{accountId}/agents' 
+							OR "transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)' 
+							OR "transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)/conversations' 
+							OR "transaction"='/api/v1/accounts/{accountId}/conversations/meta?status=open&assignee_type=me' 
+							OR "transaction"='/api/v1/accounts/(accountId)/conversations/(conv_id)' 
+							OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/labels' 
+							OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/messages?before={before_number}' 
+							OR "transaction"='/api/v1/accounts/{accountId}/conversations?status=open&assignee_type=me&page=1' 
+							OR "transaction"='/api/v1/accounts/{accountId}/dialogs/labels?dialogId[]=(dialog_id)' 
+							OR "transaction"='/api/v1/accounts/{accountId}/custom_attribute_definitions' 
+							OR "transaction"='/api/v1/accounts/{accountId}/custom_filters?filter_type=conversation' 
+							OR "transaction"='/api/v1/accounts/{accountId}/inbox_members' 
+							OR "transaction"='/api/v1/accounts/{accountId}/inbox_members/{inboxId}' 
+							OR "transaction"='/api/v1/accounts/{accountId}/inboxes' 
+							OR "transaction"='/api/v1/accounts/{accountId}/labels' 
+							OR "transaction"='/api/v1/accounts/{accountId}/notification_settings' 
+							OR "transaction"='/api/v1/accounts/{accountId}/notification_settings/global' 
+							OR "transaction"='/api/v1/accounts/{accountId}/notifications/unread_count' 
+							OR "transaction"='/api/v1/accounts/{accountId}/teams' 
+							OR "transaction"='/api/v1/notification_subscriptions' 
+							OR "transaction"='/api/v1/accounts/{accountId}/teams/{teamId}/team_members' 
+							OR "transaction"='/api/v1/profile/availability' 
+							OR "transaction"='/app/login' 
+							OR "transaction"='/auth/validate_token' 
+							OR "transaction"='/auth/sign_in' 
+							OR "transaction"='/auth/active_providers' 
+							OR "transaction"='check conversation status = open' 
+							OR "transaction"='check conversation status = resolved' 
+							OR "transaction"='toggle_status resolved' 
+							OR "transaction"='update_last_seen' 
+							OR "transaction"='host/' 
+							OR "transaction"='DB - Get last conversation id' 
+							OR "transaction"='DB - Get last contact id' 
+							OR "transaction"='DB - Get last agent' 
+							OR "transaction"='DB - Get agents tokens') 
+					GROUP BY time(interval) 
+					FILL(null)
+				]]></query>
+			</group>
+        </graph>
+    </type>
+
+    <type>
+		<category>Aggregation</category>
+		<graph>
+			<name>Aggregation data</name>
+            <group>
+				<name>Average Database query ET mean</name>
+				<query><![CDATA[
+					SELECT SUM("Database query ET") / COUNT("Database query ET") 
+						AS "Average Database query ET mean" 
+					FROM (SELECT mean("avg") AS "Database query ET" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='DB - Get last agent' 
+								OR "transaction"='DB - Get last contact id' 
+								OR "transaction"='DB - Get last conversation id' 
+								OR "transaction"='DB - Get agents tokens') 
+						GROUP BY "transaction")
+				]]></query>
+			</group>
+            <group>
+				<name>Average Create Agents ET pct90</name>
+				<query><![CDATA[
+					SELECT SUM("Create Agents ET pct90.0") / COUNT("Create Agents ET pct90.0") 
+						AS "Average Create Agents ET pct90" 
+					FROM (SELECT MEAN("pct90.0") AS "Create Agents ET pct90.0" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='/api/v1/accounts/{accountId}/agents' 
+								OR "transaction"='/api/v1/accounts/{accountId}/inbox_members' 
+								OR "transaction"='/api/v1/accounts/{accountId}/teams/{teamId}/team_members') 
+						GROUP BY "transaction" 
+						FILL(previous))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Log In requests ET pct90</name>
+				<query><![CDATA[
+					SELECT SUM("Log In requests ET pct90 sum") / COUNT("Log In requests ET pct90 sum") 
+						AS "Average Log In requests ET pct90" 
+					FROM (SELECT mean("pct90.0") AS "Log In requests ET pct90 sum" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='/app/login' 
+								OR "transaction"='/auth/sign_in' 
+								OR "transaction"='host/' 
+								OR "transaction"='/auth/validate_token') 
+						GROUP BY "transaction" 
+						FILL(null))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Dashboard requests ET pct90</name>
+				<query><![CDATA[
+					SELECT SUM("Dashboard requests ET pct90 sum") / COUNT("Dashboard requests ET pct90 sum") 
+						AS "Average Dashboard requests ET pct90" 
+					FROM (SELECT sum("mean_pct90.0") AS "Dashboard requests ET pct90 sum" 
+						FROM (SELECT mean("pct90.0") AS "mean_pct90.0" FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='/api/v1/accounts/{accountId}/' 
+								OR "transaction"='/api/v1/accounts/{accountId}/notification_settings' 
+								OR "transaction"='/api/v1/accounts/{accountId}/notification_settings/global' 
+								OR "transaction"='/api/v1/accounts/{accountId}/labels' 
+								OR "transaction"='/api/v1/accounts/{accountId}/custom_attribute_definitions' 
+								OR "transaction"='/api/v1/profile/availability' 
+								OR "transaction"='/auth/active_providers' 
+								OR "transaction"='/brand-assets/logo-small.png') 
+						GROUP BY time(7s), "transaction" 
+						FILL(null)) 
+					GROUP BY "transaction" 
+					FILL(linear))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Workflow Actions ET pct90</name>
+				<query><![CDATA[
+					SELECT SUM("Conversation Actions ET pct90.0") / COUNT("Conversation Actions ET pct90.0") 
+						AS "Average Workflow Actions ET pct90" 
+					FROM (SELECT mean("pct90.0") AS "Conversation Actions ET pct90.0" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)' 
+								OR "transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)/conversations' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/messages?before={before_number}' 
+								OR "transaction"='/api/v1/accounts/{accountId}/inbox_members/{inboxId}' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/labels' 
+								OR "transaction"='/api/v1/accounts/{accountId}/custom_attribute_definitions?filter=all' 
+								OR "transaction"='/api/v1/accounts/1/dialogs/labels?dialogId[]=(dialog_id)' 
+								OR "transaction"='update_last_seen' 
+								OR "transaction"='check conversation status = open' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations?status=open&assignee_type=me&page=1' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/meta?status=open&assignee_type=me' 
+								OR "transaction"='/api/v1/accounts/(accountId)/conversations/(conv_id)' 
+								OR "transaction"='toggle_status resolved' 
+								OR "transaction"='check conversation status = resolved') 
+						GROUP BY "transaction" 
+						FILL(null))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Workflow Actions ET max</name>
+				<query><![CDATA[
+					SELECT SUM("Conversation Actions ET max") / COUNT("Conversation Actions ET max") 
+						AS "Average Workflow Actions ET max" 
+					FROM (SELECT mean("max") AS "Conversation Actions ET max" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)' 
+								OR "transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)/conversations' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/messages?before={before_number}' 
+								OR "transaction"='/api/v1/accounts/{accountId}/inbox_members/{inboxId}' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/labels' 
+								OR "transaction"='/api/v1/accounts/{accountId}/custom_attribute_definitions?filter=all' 
+								OR "transaction"='/api/v1/accounts/1/dialogs/labels?dialogId[]=(dialog_id)' 
+								OR "transaction"='update_last_seen' 
+								OR "transaction"='check conversation status = open' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations?status=open&assignee_type=me&page=1' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/meta?status=open&assignee_type=me' 
+								OR "transaction"='/api/v1/accounts/(accountId)/conversations/(conv_id)' 
+								OR "transaction"='toggle_status resolved' 
+								OR "transaction"='check conversation status = resolved') 
+						GROUP BY "transaction" 
+						FILL(null))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Agent Messages ET mean</name>
+				<query><![CDATA[
+					SELECT SUM("Agent Messages ET average") / COUNT("Agent Messages ET average") 
+						AS "Average Agent Messages ET mean" 
+					FROM (SELECT mean("avg") AS "Agent Messages ET average" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='Agent - Reply msg 1' 
+								OR "transaction"='Agent - Reply msg 2' 
+								OR "transaction"='Agent - Reply msg 3' 
+								OR "transaction"='Agent - Reply msg 5' 
+								OR "transaction"='Agent - Reply msg 4' 
+								OR "transaction"='Agent - Welcome msg') 
+							AND ("statut"='ko' 
+								OR "statut"='ok') 
+						GROUP BY "transaction" 
+						FILL(null))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Agent Messages ET pct90</name>
+				<query><![CDATA[
+					SELECT SUM("Agent Messages ET pct90") / COUNT("Agent Messages ET pct90") 
+						AS "Average Agent Messages ET pct90" 
+					FROM (SELECT mean("pct90.0") AS "Agent Messages ET pct90" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='Agent - Reply msg 1' 
+								OR "transaction"='Agent - Reply msg 2' 
+								OR "transaction"='Agent - Reply msg 3' 
+								OR "transaction"='Agent - Reply msg 5' 
+								OR "transaction"='Agent - Reply msg 4' 
+								OR "transaction"='Agent - Welcome msg') 
+							AND ("statut"='ko' 
+								OR "statut"='ok') 
+						GROUP BY "transaction" 
+						FILL(null))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Agent Messages ET max</name>
+				<query><![CDATA[
+					SELECT SUM("Agent Messages ET max") / COUNT("Agent Messages ET max") 
+						AS "Average Agent Messages ET max" 
+					FROM (SELECT mean("max") AS "Agent Messages ET max" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='Agent - Reply msg 1' 
+								OR "transaction"='Agent - Reply msg 2' 
+								OR "transaction"='Agent - Reply msg 3' 
+								OR "transaction"='Agent - Reply msg 5' 
+								OR "transaction"='Agent - Reply msg 4' 
+								OR "transaction"='Agent - Welcome msg') 
+							AND ("statut"='ko' 
+								OR "statut"='ok') 
+						GROUP BY "transaction" 
+						FILL(null))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Client Messages ET mean</name>
+				<query><![CDATA[
+					SELECT SUM("Client Messages ET average") / COUNT("Client Messages ET average") 
+						AS "Average Client Messages ET mean" 
+					FROM (SELECT mean("avg") AS "Client Messages ET average" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='Bot - Agent request msg' 
+								OR "transaction"='Bot - Language menu msg' 
+								OR "transaction"='Bot - Entry msg' 
+								OR "transaction"='Client - CSAT answer' 
+								OR "transaction"='Client - Text msg 1' 
+								OR "transaction"='Client - Text msg 2' 
+								OR "transaction"='Client - Text msg 3' 
+								OR "transaction"='Client - Text msg 4' 
+								OR "transaction"='Client - Text msg 5') 
+							AND ("statut"='ko' 
+								OR "statut"='ok') 
+						GROUP BY "transaction" 
+						FILL(null))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Client Messages ET pct90</name>
+				<query><![CDATA[
+					SELECT SUM("Client Messages ET pct90") / COUNT("Client Messages ET pct90") 
+						AS "Average Client Messages ET pct90" 
+					FROM (SELECT mean("pct90.0") AS "Client Messages ET pct90" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='Bot - Agent request msg' 
+								OR "transaction"='Bot - Language menu msg' 
+								OR "transaction"='Bot - Entry msg' 
+								OR "transaction"='Client - CSAT answer' 
+								OR "transaction"='Client - Text msg 1' 
+								OR "transaction"='Client - Text msg 2' 
+								OR "transaction"='Client - Text msg 3' 
+								OR "transaction"='Client - Text msg 4' 
+								OR "transaction"='Client - Text msg 5') 
+							AND ("statut"='ko' 
+								OR "statut"='ok') 
+						GROUP BY "transaction" 
+						FILL(null))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Client Messages ET max</name>
+				<query><![CDATA[
+					SELECT SUM("Client Messages ET max") / COUNT("Client Messages ET max") 
+						AS "Average Client Messages ET max" 
+					FROM (SELECT mean("max") AS "Client Messages ET max" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='Bot - Agent request msg' 
+								OR "transaction"='Bot - Language menu msg' 
+								OR "transaction"='Bot - Entry msg' 
+								OR "transaction"='Client - CSAT answer' 
+								OR "transaction"='Client - Text msg 1' 
+								OR "transaction"='Client - Text msg 2' 
+								OR "transaction"='Client - Text msg 3' 
+								OR "transaction"='Client - Text msg 4' 
+								OR "transaction"='Client - Text msg 5') 
+							AND ("statut"='ko' 
+								OR "statut"='ok') 
+						GROUP BY "transaction" 
+						FILL(null))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Request Throughput of all requests</name>
+				<query><![CDATA[
+					SELECT SUM("Request Throughput") / COUNT("Request Throughput") 
+						AS "Average Request Throughput of all requests" 
+					FROM (SELECT mean("hit") AS "Request Throughput" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='/api/v1/accounts/{accountId}/' 
+								OR "transaction"='/api/v1/accounts/{accountId}/agents' 
+								OR "transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)' 
+								OR "transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)/conversations' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/meta?status=open&assignee_type=me' 
+								OR "transaction"='/api/v1/accounts/(accountId)/conversations/(conv_id)' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/labels' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/messages?before={before_number}' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations?status=open&assignee_type=me&page=1' 
+								OR "transaction"='/api/v1/accounts/{accountId}/dialogs/labels?dialogId[]=(dialog_id)' 
+								OR "transaction"='/api/v1/accounts/{accountId}/custom_attribute_definitions' 
+								OR "transaction"='/api/v1/accounts/{accountId}/custom_filters?filter_type=conversation' 
+								OR "transaction"='/api/v1/accounts/{accountId}/inbox_members' 
+								OR "transaction"='/api/v1/accounts/{accountId}/inbox_members/{inboxId}' 
+								OR "transaction"='/api/v1/accounts/{accountId}/labels' 
+								OR "transaction"='/api/v1/accounts/{accountId}/inboxes' 
+								OR "transaction"='/api/v1/accounts/{accountId}/notification_settings' 
+								OR "transaction"='/api/v1/accounts/{accountId}/notification_settings/global' 
+								OR "transaction"='/api/v1/accounts/{accountId}/notifications/unread_count' 
+								OR "transaction"='/api/v1/accounts/{accountId}/teams' 
+								OR "transaction"='/api/v1/accounts/{accountId}/teams/{teamId}/team_members' 
+								OR "transaction"='/api/v1/notification_subscriptions' 
+								OR "transaction"='/api/v1/profile/availability' 
+								OR "transaction"='/app/login' 
+								OR "transaction"='/auth/active_providers' 
+								OR "transaction"='/auth/sign_in' 
+								OR "transaction"='/auth/validate_token' 
+								OR "transaction"='Agent - Reply msg 1' 
+								OR "transaction"='Agent - Reply msg 2' 
+								OR "transaction"='Agent - Reply msg 3' 
+								OR "transaction"='Agent - Reply msg 4' 
+								OR "transaction"='Agent - Reply msg 5' 
+								OR "transaction"='Agent - Welcome msg' 
+								OR "transaction"='Bot - Agent request msg' 
+								OR "transaction"='Bot - Entry msg' 
+								OR "transaction"='Bot - Language menu msg' 
+								OR "transaction"='Client - CSAT answer' 
+								OR "transaction"='Client - Text msg 1' 
+								OR "transaction"='Client - Text msg 2' 
+								OR "transaction"='Client - Text msg 3' 
+								OR "transaction"='Client - Text msg 4' 
+								OR "transaction"='Client - Text msg 5' 
+								OR "transaction"='check conversation status = open' 
+								OR "transaction"='check conversation status = resolved' 
+								OR "transaction"='host/' 
+								OR "transaction"='toggle_status resolved' 
+								OR "transaction"='update_last_seen') 
+						GROUP BY "transaction" 
+						FILL(null))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Request Throughput of all Agent messages</name>
+				<query><![CDATA[
+					SELECT SUM("Request Throughput") / COUNT("Request Throughput") 
+						AS "Average Request Throughput of all Agent messages" 
+					FROM (SELECT mean("hit") AS "Request Throughput" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='Agent - Reply msg 1' 
+								OR "transaction"='Agent - Reply msg 2' 
+								OR "transaction"='Agent - Reply msg 3' 
+								OR "transaction"='Agent - Reply msg 4' 
+								OR "transaction"='Agent - Reply msg 5' 
+								OR "transaction"='Agent - Welcome msg') 
+						GROUP BY "transaction" 
+						FILL(null))
+				]]></query>
+			</group>
+            <group>
+				<name>Total Errors</name>
+				<query><![CDATA[
+					SELECT sum("hit") AS "Total Errors" 
+					FROM "db0"."autogen"."jmeter" 
+					WHERE time > 'dateTimeStart' 
+						AND time < 'dateTimeEnd' 
+						AND "statut"='ko' 
+						AND ("transaction"='Client - Text msg 5' 
+							OR "transaction"='Client - Text msg 4' 
+							OR "transaction"='Client - Text msg 3' 
+							OR "transaction"='Client - Text msg 2' 
+							OR "transaction"='Client - Text msg 1' 
+							OR "transaction"='Client - CSAT answer' 
+							OR "transaction"='Bot - Agent request msg' 
+							OR "transaction"='Bot - Entry msg' 
+							OR "transaction"='Bot - Language menu msg' 
+							OR "transaction"='Agent - Reply msg 1' 
+							OR "transaction"='Agent - Reply msg 2' 
+							OR "transaction"='Agent - Reply msg 3' 
+							OR "transaction"='Agent - Reply msg 4' 
+							OR "transaction"='Agent - Reply msg 5' 
+							OR "transaction"='Agent - Welcome msg' 
+							OR "transaction"='/api/v1/accounts/{accountId}/' 
+							OR "transaction"='/api/v1/accounts/{accountId}/agents' 
+							OR "transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)' 
+							OR "transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)/conversations' 
+							OR "transaction"='/api/v1/accounts/{accountId}/conversations/meta?status=open&assignee_type=me' 
+							OR "transaction"='/api/v1/accounts/(accountId)/conversations/(conv_id)' 
+							OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/labels' 
+							OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/messages?before={before_number}' 
+							OR "transaction"='/api/v1/accounts/{accountId}/conversations?status=open&assignee_type=me&page=1' 
+							OR "transaction"='/api/v1/accounts/{accountId}/dialogs/labels?dialogId[]=(dialog_id)' 
+							OR "transaction"='/api/v1/accounts/{accountId}/custom_attribute_definitions' 
+							OR "transaction"='/api/v1/accounts/{accountId}/custom_filters?filter_type=conversation' 
+							OR "transaction"='/api/v1/accounts/{accountId}/inbox_members' 
+							OR "transaction"='/api/v1/accounts/{accountId}/inbox_members/{inboxId}' 
+							OR "transaction"='/api/v1/accounts/{accountId}/inboxes' 
+							OR "transaction"='/api/v1/accounts/{accountId}/labels' 
+							OR "transaction"='/api/v1/accounts/{accountId}/notification_settings' 
+							OR "transaction"='/api/v1/accounts/{accountId}/notification_settings/global' 
+							OR "transaction"='/api/v1/accounts/{accountId}/notifications/unread_count' 
+							OR "transaction"='/api/v1/accounts/{accountId}/teams' 
+							OR "transaction"='/api/v1/notification_subscriptions' 
+							OR "transaction"='/api/v1/accounts/{accountId}/teams/{teamId}/team_members' 
+							OR "transaction"='/api/v1/profile/availability' 
+							OR "transaction"='/app/login' 
+							OR "transaction"='/auth/validate_token' 
+							OR "transaction"='/auth/sign_in' 
+							OR "transaction"='/auth/active_providers' 
+							OR "transaction"='check conversation status = open' 
+							OR "transaction"='check conversation status = resolved' 
+							OR "transaction"='toggle_status resolved' 
+							OR "transaction"='update_last_seen' 
+							OR "transaction"='host/' 
+							OR "transaction"='DB - Get last conversation id' 
+							OR "transaction"='DB - Get last contact id' 
+							OR "transaction"='DB - Get last agent' 
+							OR "transaction"='DB - Get agents tokens') 
+					FILL(null)
+				]]></query>
+			</group>
+		</graph>
+		<graph>
+			<name>Aggregation by interval data</name>
+            <group>
+				<name>Average Database query ET mean</name>
+				<query><![CDATA[
+					SELECT SUM("Database query ET") / COUNT("Database query ET") 
+						AS "Average Database query ET mean" 
+					FROM (SELECT mean("avg") AS "Database query ET" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='DB - Get last agent' 
+								OR "transaction"='DB - Get last contact id' 
+								OR "transaction"='DB - Get last conversation id' 
+								OR "transaction"='DB - Get agents tokens') 
+						GROUP BY "transaction", time(interval))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Create Agents ET pct90</name>
+				<query><![CDATA[
+					SELECT SUM("Create Agents ET pct90.0") / COUNT("Create Agents ET pct90.0") 
+						AS "Average Create Agents ET pct90" 
+					FROM (SELECT MEAN("pct90.0") AS "Create Agents ET pct90.0" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='/api/v1/accounts/{accountId}/agents' 
+								OR "transaction"='/api/v1/accounts/{accountId}/inbox_members' 
+								OR "transaction"='/api/v1/accounts/{accountId}/teams/{teamId}/team_members') 
+						GROUP BY "transaction", time(interval) 
+						FILL(previous))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Log In requests ET pct90</name>
+				<query><![CDATA[
+					SELECT SUM("Log In requests ET pct90 sum") / COUNT("Log In requests ET pct90 sum") 
+						AS "Average Log In requests ET pct90" 
+					FROM (SELECT mean("pct90.0") AS "Log In requests ET pct90 sum" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='/app/login' 
+								OR "transaction"='/auth/sign_in' 
+								OR "transaction"='host/' 
+								OR "transaction"='/auth/validate_token') 
+						GROUP BY "transaction", time(interval) 
+						FILL(null))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Dashboard requests ET pct90</name>
+				<query><![CDATA[
+					SELECT SUM("Dashboard requests ET pct90 sum") / COUNT("Dashboard requests ET pct90 sum") 
+						AS "Average Dashboard requests ET pct90" 
+					FROM (SELECT sum("mean_pct90.0") AS "Dashboard requests ET pct90 sum" 
+						FROM (SELECT mean("pct90.0") AS "mean_pct90.0" FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='/api/v1/accounts/{accountId}/' 
+								OR "transaction"='/api/v1/accounts/{accountId}/notification_settings' 
+								OR "transaction"='/api/v1/accounts/{accountId}/notification_settings/global' 
+								OR "transaction"='/api/v1/accounts/{accountId}/labels' 
+								OR "transaction"='/api/v1/accounts/{accountId}/custom_attribute_definitions' 
+								OR "transaction"='/api/v1/profile/availability' 
+								OR "transaction"='/auth/active_providers' 
+								OR "transaction"='/brand-assets/logo-small.png') 
+						GROUP BY time(7s), "transaction" 
+						FILL(null)) 
+					GROUP BY "transaction", time(interval) 
+					FILL(linear))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Workflow Actions ET pct90</name>
+				<query><![CDATA[
+					SELECT SUM("Conversation Actions ET pct90.0") / COUNT("Conversation Actions ET pct90.0") 
+						AS "Average Workflow Actions ET pct90" 
+					FROM (SELECT mean("pct90.0") AS "Conversation Actions ET pct90.0" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)' 
+								OR "transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)/conversations' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/messages?before={before_number}' 
+								OR "transaction"='/api/v1/accounts/{accountId}/inbox_members/{inboxId}' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/labels' 
+								OR "transaction"='/api/v1/accounts/{accountId}/custom_attribute_definitions?filter=all' 
+								OR "transaction"='/api/v1/accounts/1/dialogs/labels?dialogId[]=(dialog_id)' 
+								OR "transaction"='update_last_seen' 
+								OR "transaction"='check conversation status = open' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations?status=open&assignee_type=me&page=1' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/meta?status=open&assignee_type=me' 
+								OR "transaction"='/api/v1/accounts/(accountId)/conversations/(conv_id)' 
+								OR "transaction"='toggle_status resolved' 
+								OR "transaction"='check conversation status = resolved') 
+						GROUP BY "transaction", time(interval) 
+						FILL(null))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Workflow Actions ET max</name>
+				<query><![CDATA[
+					SELECT SUM("Conversation Actions ET max") / COUNT("Conversation Actions ET max") 
+						AS "Average Workflow Actions ET max" 
+					FROM (SELECT mean("max") AS "Conversation Actions ET max" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)' 
+								OR "transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)/conversations' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/messages?before={before_number}' 
+								OR "transaction"='/api/v1/accounts/{accountId}/inbox_members/{inboxId}' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/labels' 
+								OR "transaction"='/api/v1/accounts/{accountId}/custom_attribute_definitions?filter=all' 
+								OR "transaction"='/api/v1/accounts/1/dialogs/labels?dialogId[]=(dialog_id)' 
+								OR "transaction"='update_last_seen' 
+								OR "transaction"='check conversation status = open' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations?status=open&assignee_type=me&page=1' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/meta?status=open&assignee_type=me' 
+								OR "transaction"='/api/v1/accounts/(accountId)/conversations/(conv_id)' 
+								OR "transaction"='toggle_status resolved' 
+								OR "transaction"='check conversation status = resolved') 
+						GROUP BY "transaction", time(interval) 
+						FILL(null))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Agent Messages ET mean</name>
+				<query><![CDATA[
+					SELECT SUM("Agent Messages ET average") / COUNT("Agent Messages ET average") 
+						AS "Average Agent Messages ET mean" 
+					FROM (SELECT mean("avg") AS "Agent Messages ET average" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='Agent - Reply msg 1' 
+								OR "transaction"='Agent - Reply msg 2' 
+								OR "transaction"='Agent - Reply msg 3' 
+								OR "transaction"='Agent - Reply msg 5' 
+								OR "transaction"='Agent - Reply msg 4' 
+								OR "transaction"='Agent - Welcome msg') 
+							AND ("statut"='ko' 
+								OR "statut"='ok') 
+						GROUP BY "transaction", time(interval) 
+						FILL(null))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Agent Messages ET pct90</name>
+				<query><![CDATA[
+					SELECT SUM("Agent Messages ET pct90") / COUNT("Agent Messages ET pct90") 
+						AS "Average Agent Messages ET pct90" 
+					FROM (SELECT mean("pct90.0") AS "Agent Messages ET pct90" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='Agent - Reply msg 1' 
+								OR "transaction"='Agent - Reply msg 2' 
+								OR "transaction"='Agent - Reply msg 3' 
+								OR "transaction"='Agent - Reply msg 5' 
+								OR "transaction"='Agent - Reply msg 4' 
+								OR "transaction"='Agent - Welcome msg') 
+							AND ("statut"='ko' 
+								OR "statut"='ok') 
+						GROUP BY "transaction", time(interval) 
+						FILL(null))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Agent Messages ET max</name>
+				<query><![CDATA[
+					SELECT SUM("Agent Messages ET max") / COUNT("Agent Messages ET max") 
+						AS "Average Agent Messages ET max" 
+					FROM (SELECT mean("max") AS "Agent Messages ET max" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='Agent - Reply msg 1' 
+								OR "transaction"='Agent - Reply msg 2' 
+								OR "transaction"='Agent - Reply msg 3' 
+								OR "transaction"='Agent - Reply msg 5' 
+								OR "transaction"='Agent - Reply msg 4' 
+								OR "transaction"='Agent - Welcome msg') 
+							AND ("statut"='ko' 
+								OR "statut"='ok') 
+						GROUP BY "transaction", time(interval) 
+						FILL(null))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Client Messages ET mean</name>
+				<query><![CDATA[
+					SELECT SUM("Client Messages ET average") / COUNT("Client Messages ET average") 
+						AS "Average Client Messages ET mean" 
+					FROM (SELECT mean("avg") AS "Client Messages ET average" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='Bot - Agent request msg' 
+								OR "transaction"='Bot - Language menu msg' 
+								OR "transaction"='Bot - Entry msg' 
+								OR "transaction"='Client - CSAT answer' 
+								OR "transaction"='Client - Text msg 1' 
+								OR "transaction"='Client - Text msg 2' 
+								OR "transaction"='Client - Text msg 3' 
+								OR "transaction"='Client - Text msg 4' 
+								OR "transaction"='Client - Text msg 5') 
+							AND ("statut"='ko' 
+								OR "statut"='ok') 
+						GROUP BY "transaction", time(interval) 
+						FILL(null))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Client Messages ET pct90</name>
+				<query><![CDATA[
+					SELECT SUM("Client Messages ET pct90") / COUNT("Client Messages ET pct90") 
+						AS "Average Client Messages ET pct90" 
+					FROM (SELECT mean("pct90.0") AS "Client Messages ET pct90" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='Bot - Agent request msg' 
+								OR "transaction"='Bot - Language menu msg' 
+								OR "transaction"='Bot - Entry msg' 
+								OR "transaction"='Client - CSAT answer' 
+								OR "transaction"='Client - Text msg 1' 
+								OR "transaction"='Client - Text msg 2' 
+								OR "transaction"='Client - Text msg 3' 
+								OR "transaction"='Client - Text msg 4' 
+								OR "transaction"='Client - Text msg 5') 
+							AND ("statut"='ko' 
+								OR "statut"='ok') 
+						GROUP BY "transaction", time(interval) 
+						FILL(null))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Client Messages ET max</name>
+				<query><![CDATA[
+					SELECT SUM("Client Messages ET max") / COUNT("Client Messages ET max") 
+						AS "Average Client Messages ET max" 
+					FROM (SELECT mean("max") AS "Client Messages ET max" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='Bot - Agent request msg' 
+								OR "transaction"='Bot - Language menu msg' 
+								OR "transaction"='Bot - Entry msg' 
+								OR "transaction"='Client - CSAT answer' 
+								OR "transaction"='Client - Text msg 1' 
+								OR "transaction"='Client - Text msg 2' 
+								OR "transaction"='Client - Text msg 3' 
+								OR "transaction"='Client - Text msg 4' 
+								OR "transaction"='Client - Text msg 5') 
+							AND ("statut"='ko' 
+								OR "statut"='ok') 
+						GROUP BY "transaction", time(interval) 
+						FILL(null))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Request Throughput of all requests</name>
+				<query><![CDATA[
+					SELECT SUM("Request Throughput") / COUNT("Request Throughput") 
+						AS "Average Request Throughput of all requests" 
+					FROM (SELECT mean("hit") AS "Request Throughput" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='/api/v1/accounts/{accountId}/' 
+								OR "transaction"='/api/v1/accounts/{accountId}/agents' 
+								OR "transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)' 
+								OR "transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)/conversations' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/meta?status=open&assignee_type=me' 
+								OR "transaction"='/api/v1/accounts/(accountId)/conversations/(conv_id)' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/labels' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/messages?before={before_number}' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations?status=open&assignee_type=me&page=1' 
+								OR "transaction"='/api/v1/accounts/{accountId}/dialogs/labels?dialogId[]=(dialog_id)' 
+								OR "transaction"='/api/v1/accounts/{accountId}/custom_attribute_definitions' 
+								OR "transaction"='/api/v1/accounts/{accountId}/custom_filters?filter_type=conversation' 
+								OR "transaction"='/api/v1/accounts/{accountId}/inbox_members' 
+								OR "transaction"='/api/v1/accounts/{accountId}/inbox_members/{inboxId}' 
+								OR "transaction"='/api/v1/accounts/{accountId}/labels' 
+								OR "transaction"='/api/v1/accounts/{accountId}/inboxes' 
+								OR "transaction"='/api/v1/accounts/{accountId}/notification_settings' 
+								OR "transaction"='/api/v1/accounts/{accountId}/notification_settings/global' 
+								OR "transaction"='/api/v1/accounts/{accountId}/notifications/unread_count' 
+								OR "transaction"='/api/v1/accounts/{accountId}/teams' 
+								OR "transaction"='/api/v1/accounts/{accountId}/teams/{teamId}/team_members' 
+								OR "transaction"='/api/v1/notification_subscriptions' 
+								OR "transaction"='/api/v1/profile/availability' 
+								OR "transaction"='/app/login' 
+								OR "transaction"='/auth/active_providers' 
+								OR "transaction"='/auth/sign_in' 
+								OR "transaction"='/auth/validate_token' 
+								OR "transaction"='Agent - Reply msg 1' 
+								OR "transaction"='Agent - Reply msg 2' 
+								OR "transaction"='Agent - Reply msg 3' 
+								OR "transaction"='Agent - Reply msg 4' 
+								OR "transaction"='Agent - Reply msg 5' 
+								OR "transaction"='Agent - Welcome msg' 
+								OR "transaction"='Bot - Agent request msg' 
+								OR "transaction"='Bot - Entry msg' 
+								OR "transaction"='Bot - Language menu msg' 
+								OR "transaction"='Client - CSAT answer' 
+								OR "transaction"='Client - Text msg 1' 
+								OR "transaction"='Client - Text msg 2' 
+								OR "transaction"='Client - Text msg 3' 
+								OR "transaction"='Client - Text msg 4' 
+								OR "transaction"='Client - Text msg 5' 
+								OR "transaction"='check conversation status = open' 
+								OR "transaction"='check conversation status = resolved' 
+								OR "transaction"='host/' 
+								OR "transaction"='toggle_status resolved' 
+								OR "transaction"='update_last_seen') 
+						GROUP BY "transaction", time(interval) 
+						FILL(null))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Request Throughput of all Agent messages</name>
+				<query><![CDATA[
+					SELECT SUM("Request Throughput") / COUNT("Request Throughput") 
+						AS "Average Request Throughput of all Agent messages" 
+					FROM (SELECT mean("hit") AS "Request Throughput" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='Agent - Reply msg 1' 
+								OR "transaction"='Agent - Reply msg 2' 
+								OR "transaction"='Agent - Reply msg 3' 
+								OR "transaction"='Agent - Reply msg 4' 
+								OR "transaction"='Agent - Reply msg 5' 
+								OR "transaction"='Agent - Welcome msg') 
+						GROUP BY "transaction", time(interval) 
+						FILL(null))
+				]]></query>
+			</group>
+            <group>
+				<name>Total Errors</name>
+				<query><![CDATA[
+					SELECT sum("hit") AS "Total Errors" 
+					FROM "db0"."autogen"."jmeter" 
+					WHERE time > 'dateTimeStart' 
+						AND time < 'dateTimeEnd' 
+						AND "statut"='ko' 
+						AND ("transaction"='Client - Text msg 5' 
+							OR "transaction"='Client - Text msg 4' 
+							OR "transaction"='Client - Text msg 3' 
+							OR "transaction"='Client - Text msg 2' 
+							OR "transaction"='Client - Text msg 1' 
+							OR "transaction"='Client - CSAT answer' 
+							OR "transaction"='Bot - Agent request msg' 
+							OR "transaction"='Bot - Entry msg' 
+							OR "transaction"='Bot - Language menu msg' 
+							OR "transaction"='Agent - Reply msg 1' 
+							OR "transaction"='Agent - Reply msg 2' 
+							OR "transaction"='Agent - Reply msg 3' 
+							OR "transaction"='Agent - Reply msg 4' 
+							OR "transaction"='Agent - Reply msg 5' 
+							OR "transaction"='Agent - Welcome msg' 
+							OR "transaction"='/api/v1/accounts/{accountId}/' 
+							OR "transaction"='/api/v1/accounts/{accountId}/agents' 
+							OR "transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)' 
+							OR "transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)/conversations' 
+							OR "transaction"='/api/v1/accounts/{accountId}/conversations/meta?status=open&assignee_type=me' 
+							OR "transaction"='/api/v1/accounts/(accountId)/conversations/(conv_id)' 
+							OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/labels' 
+							OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/messages?before={before_number}' 
+							OR "transaction"='/api/v1/accounts/{accountId}/conversations?status=open&assignee_type=me&page=1' 
+							OR "transaction"='/api/v1/accounts/{accountId}/dialogs/labels?dialogId[]=(dialog_id)' 
+							OR "transaction"='/api/v1/accounts/{accountId}/custom_attribute_definitions' 
+							OR "transaction"='/api/v1/accounts/{accountId}/custom_filters?filter_type=conversation' 
+							OR "transaction"='/api/v1/accounts/{accountId}/inbox_members' 
+							OR "transaction"='/api/v1/accounts/{accountId}/inbox_members/{inboxId}' 
+							OR "transaction"='/api/v1/accounts/{accountId}/inboxes' 
+							OR "transaction"='/api/v1/accounts/{accountId}/labels' 
+							OR "transaction"='/api/v1/accounts/{accountId}/notification_settings' 
+							OR "transaction"='/api/v1/accounts/{accountId}/notification_settings/global' 
+							OR "transaction"='/api/v1/accounts/{accountId}/notifications/unread_count' 
+							OR "transaction"='/api/v1/accounts/{accountId}/teams' 
+							OR "transaction"='/api/v1/notification_subscriptions' 
+							OR "transaction"='/api/v1/accounts/{accountId}/teams/{teamId}/team_members' 
+							OR "transaction"='/api/v1/profile/availability' 
+							OR "transaction"='/app/login' 
+							OR "transaction"='/auth/validate_token' 
+							OR "transaction"='/auth/sign_in' 
+							OR "transaction"='/auth/active_providers' 
+							OR "transaction"='check conversation status = open' 
+							OR "transaction"='check conversation status = resolved' 
+							OR "transaction"='toggle_status resolved' 
+							OR "transaction"='update_last_seen' 
+							OR "transaction"='host/' 
+							OR "transaction"='DB - Get last conversation id' 
+							OR "transaction"='DB - Get last contact id' 
+							OR "transaction"='DB - Get last agent' 
+							OR "transaction"='DB - Get agents tokens') 
+					FILL(null)
+				]]></query>
+			</group>
+		</graph>
+		<graph>
+			<name>Aggregation data spread</name>
+            <group>
+				<name>Average Database query ET spread of mean</name>
+				<query><![CDATA[
+					SELECT SUM("Database query ET") / COUNT("Database query ET") 
+						AS "Average Database query ET spread of mean" 
+					FROM (SELECT SPREAD("avg") AS "Database query ET" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='DB - Get last agent' 
+								OR "transaction"='DB - Get last contact id' 
+								OR "transaction"='DB - Get last conversation id' 
+								OR "transaction"='DB - Get agents tokens') 
+						GROUP BY "transaction")
+				]]></query>
+			</group>
+            <group>
+				<name>Average Create Agents ET spread of pct90</name>
+				<query><![CDATA[
+					SELECT SUM("Create Agents ET pct90.0") / COUNT("Create Agents ET pct90.0") 
+						AS "Average Create Agents ET spread of pct90" 
+					FROM (SELECT SPREAD("pct90.0") AS "Create Agents ET pct90.0" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='/api/v1/accounts/{accountId}/agents' 
+								OR "transaction"='/api/v1/accounts/{accountId}/inbox_members' 
+								OR "transaction"='/api/v1/accounts/{accountId}/teams/{teamId}/team_members') 
+						GROUP BY "transaction" 
+						FILL(previous))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Log In requests ET spread of pct90</name>
+				<query><![CDATA[
+					SELECT SUM("Log In requests ET pct90 sum") / COUNT("Log In requests ET pct90 sum") 
+						AS "Average Log In requests ET spread of pct90" 
+					FROM ( SELECT SPREAD("pct90.0") AS "Log In requests ET pct90 sum" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='/app/login' 
+								OR "transaction"='/auth/sign_in' 
+								OR "transaction"='host/' 
+								OR "transaction"='/auth/validate_token') 
+						GROUP BY "transaction" 
+						FILL(null))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Dashboard requests ET spread of pct90</name>
+				<query><![CDATA[
+					SELECT SUM("Dashboard requests ET pct90 sum") / COUNT("Dashboard requests ET pct90 sum") 
+						AS "Average Dashboard requests ET spread of pct90" 
+					FROM (SELECT sum("mean_pct90.0") AS "Dashboard requests ET pct90 sum" 
+						FROM (SELECT SPREAD("pct90.0") AS "mean_pct90.0" 
+							FROM "db0"."autogen"."jmeter" 
+							WHERE time > 'dateTimeStart' 
+								AND time < 'dateTimeEnd' 
+								AND ("transaction"='/api/v1/accounts/{accountId}/' 
+									OR "transaction"='/api/v1/accounts/{accountId}/notification_settings' 
+									OR "transaction"='/api/v1/accounts/{accountId}/notification_settings/global' 
+									OR "transaction"='/api/v1/accounts/{accountId}/labels' 
+									OR "transaction"='/api/v1/accounts/{accountId}/custom_attribute_definitions' 
+									OR "transaction"='/api/v1/profile/availability' 
+									OR "transaction"='/auth/active_providers' 
+									OR "transaction"='/brand-assets/logo-small.png') 
+							GROUP BY time(7s), "transaction" 
+							FILL(null)) 
+						GROUP BY "transaction" 
+						FILL(linear))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Workflow Actions ET spread of pct90</name>
+				<query><![CDATA[
+					SELECT SUM("Conversation Actions ET pct90.0") / COUNT("Conversation Actions ET pct90.0") 
+						AS "Average Workflow Actions ET spread of pct90" 
+					FROM (SELECT SPREAD("pct90.0") AS "Conversation Actions ET pct90.0" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)' 
+								OR "transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)/conversations' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/messages?before={before_number}' 
+								OR "transaction"='/api/v1/accounts/{accountId}/inbox_members/{inboxId}' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/labels' 
+								OR "transaction"='/api/v1/accounts/{accountId}/custom_attribute_definitions?filter=all' 
+								OR "transaction"='/api/v1/accounts/1/dialogs/labels?dialogId[]=(dialog_id)' 
+								OR "transaction"='update_last_seen' 
+								OR "transaction"='check conversation status = open' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations?status=open&assignee_type=me&page=1' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/meta?status=open&assignee_type=me' 
+								OR "transaction"='/api/v1/accounts/(accountId)/conversations/(conv_id)' 
+								OR "transaction"='toggle_status resolved' 
+								OR "transaction"='check conversation status = resolved') 
+						GROUP BY "transaction" 
+						FILL(null))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Workflow Actions ET spread of max</name>
+				<query><![CDATA[
+					SELECT SUM("Conversation Actions ET max") / COUNT("Conversation Actions ET max") 
+						AS "Average Workflow Actions ET spread of max" 
+					FROM (SELECT SPREAD("max") AS "Conversation Actions ET max" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)' 
+								OR "transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)/conversations' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/messages?before={before_number}' 
+								OR "transaction"='/api/v1/accounts/{accountId}/inbox_members/{inboxId}' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/labels' 
+								OR "transaction"='/api/v1/accounts/{accountId}/custom_attribute_definitions?filter=all' 
+								OR "transaction"='/api/v1/accounts/1/dialogs/labels?dialogId[]=(dialog_id)' 
+								OR "transaction"='update_last_seen' 
+								OR "transaction"='check conversation status = open' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations?status=open&assignee_type=me&page=1' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/meta?status=open&assignee_type=me' 
+								OR "transaction"='/api/v1/accounts/(accountId)/conversations/(conv_id)' 
+								OR "transaction"='toggle_status resolved' 
+								OR "transaction"='check conversation status = resolved') 
+						GROUP BY "transaction" 
+						FILL(null))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Agent Messages ET spread of mean</name>
+				<query><![CDATA[
+					SELECT SUM("Agent Messages ET average") / COUNT("Agent Messages ET average") 
+						AS "Average Agent Messages ET spread of mean" 
+					FROM (SELECT SPREAD("avg") AS "Agent Messages ET average" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='Agent - Reply msg 1' 
+								OR "transaction"='Agent - Reply msg 2' 
+								OR "transaction"='Agent - Reply msg 3' 
+								OR "transaction"='Agent - Reply msg 5' 
+								OR "transaction"='Agent - Reply msg 4' 
+								OR "transaction"='Agent - Welcome msg') 
+							AND ("statut"='ko' 
+								OR "statut"='ok') 
+						GROUP BY "transaction" 
+						FILL(null))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Agent Messages ET spread of pct90</name>
+				<query><![CDATA[
+					SELECT SUM("Agent Messages ET pct90") / COUNT("Agent Messages ET pct90") 
+						AS "Average Agent Messages ET spread of pct90" 
+					FROM (SELECT SPREAD("pct90.0") AS "Agent Messages ET pct90" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='Agent - Reply msg 1' 
+								OR "transaction"='Agent - Reply msg 2' 
+								OR "transaction"='Agent - Reply msg 3' 
+								OR "transaction"='Agent - Reply msg 5' 
+								OR "transaction"='Agent - Reply msg 4' 
+								OR "transaction"='Agent - Welcome msg') 
+							AND ("statut"='ko' 
+								OR "statut"='ok') 
+						GROUP BY "transaction" 
+						FILL(null))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Agent Messages ET spread of max</name>
+				<query><![CDATA[
+					SELECT SUM("Agent Messages ET max") / COUNT("Agent Messages ET max") 
+						AS "Average Agent Messages ET spread of max" 
+					FROM (SELECT SPREAD("max") AS "Agent Messages ET max" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='Agent - Reply msg 1' 
+								OR "transaction"='Agent - Reply msg 2' 
+								OR "transaction"='Agent - Reply msg 3' 
+								OR "transaction"='Agent - Reply msg 5' 
+								OR "transaction"='Agent - Reply msg 4' 
+								OR "transaction"='Agent - Welcome msg') 
+							AND ("statut"='ko' 
+								OR "statut"='ok') 
+						GROUP BY "transaction" 
+						FILL(null))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Client Messages ET spread of mean</name>
+				<query><![CDATA[
+					SELECT SUM("Client Messages ET average") / COUNT("Client Messages ET average") 
+						AS "Average Client Messages ET spread of mean" 
+					FROM (SELECT SPREAD("avg") AS "Client Messages ET average" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='Bot - Agent request msg' 
+								OR "transaction"='Bot - Language menu msg' 
+								OR "transaction"='Bot - Entry msg' 
+								OR "transaction"='Client - CSAT answer' 
+								OR "transaction"='Client - Text msg 1' 
+								OR "transaction"='Client - Text msg 2' 
+								OR "transaction"='Client - Text msg 3' 
+								OR "transaction"='Client - Text msg 4' 
+								OR "transaction"='Client - Text msg 5') 
+							AND ("statut"='ko' OR "statut"='ok') 
+						GROUP BY "transaction" 
+						FILL(null))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Client Messages ET spread of pct90</name>
+				<query><![CDATA[
+					SELECT SUM("Client Messages ET pct90") / COUNT("Client Messages ET pct90") 
+						AS "Average Client Messages ET spread of pct90" 
+					FROM (SELECT SPREAD("pct90.0") AS "Client Messages ET pct90" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='Bot - Agent request msg' 
+								OR "transaction"='Bot - Language menu msg' 
+								OR "transaction"='Bot - Entry msg' 
+								OR "transaction"='Client - CSAT answer' 
+								OR "transaction"='Client - Text msg 1' 
+								OR "transaction"='Client - Text msg 2' 
+								OR "transaction"='Client - Text msg 3' 
+								OR "transaction"='Client - Text msg 4' 
+								OR "transaction"='Client - Text msg 5') 
+							AND ("statut"='ko' 
+								OR "statut"='ok') 
+						GROUP BY "transaction" 
+						FILL(null))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Client Messages ET spread of max</name>
+				<query><![CDATA[
+					SELECT SUM("Client Messages ET max") / COUNT("Client Messages ET max") 
+						AS "Average Client Messages ET spread of max" 
+					FROM (SELECT SPREAD("max") AS "Client Messages ET max" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='Bot - Agent request msg' 
+								OR "transaction"='Bot - Language menu msg' 
+								OR "transaction"='Bot - Entry msg' 
+								OR "transaction"='Client - CSAT answer' 
+								OR "transaction"='Client - Text msg 1' 
+								OR "transaction"='Client - Text msg 2' 
+								OR "transaction"='Client - Text msg 3' 
+								OR "transaction"='Client - Text msg 4' 
+								OR "transaction"='Client - Text msg 5') 
+							AND ("statut"='ko' 
+								OR "statut"='ok') 
+						GROUP BY "transaction" 
+						FILL(null))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Request Throughput of all requests spread</name>
+				<query><![CDATA[
+					SELECT SUM("Request Throughput") / COUNT("Request Throughput") 
+						AS "Average Request Throughput of all requests spread" 
+					FROM (SELECT SPREAD("hit") AS "Request Throughput" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='/api/v1/accounts/{accountId}/' 
+								OR "transaction"='/api/v1/accounts/{accountId}/agents' 
+								OR "transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)' 
+								OR "transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)/conversations' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/meta?status=open&assignee_type=me' 
+								OR "transaction"='/api/v1/accounts/(accountId)/conversations/(conv_id)' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/labels' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/messages?before={before_number}' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations?status=open&assignee_type=me&page=1' 
+								OR "transaction"='/api/v1/accounts/{accountId}/dialogs/labels?dialogId[]=(dialog_id)' 
+								OR "transaction"='/api/v1/accounts/{accountId}/custom_attribute_definitions' 
+								OR "transaction"='/api/v1/accounts/{accountId}/custom_filters?filter_type=conversation' 
+								OR "transaction"='/api/v1/accounts/{accountId}/inbox_members' 
+								OR "transaction"='/api/v1/accounts/{accountId}/inbox_members/{inboxId}' 
+								OR "transaction"='/api/v1/accounts/{accountId}/labels' 
+								OR "transaction"='/api/v1/accounts/{accountId}/inboxes' 
+								OR "transaction"='/api/v1/accounts/{accountId}/notification_settings' 
+								OR "transaction"='/api/v1/accounts/{accountId}/notification_settings/global' 
+								OR "transaction"='/api/v1/accounts/{accountId}/notifications/unread_count' 
+								OR "transaction"='/api/v1/accounts/{accountId}/teams' 
+								OR "transaction"='/api/v1/accounts/{accountId}/teams/{teamId}/team_members' 
+								OR "transaction"='/api/v1/notification_subscriptions' 
+								OR "transaction"='/api/v1/profile/availability' 
+								OR "transaction"='/app/login' 
+								OR "transaction"='/auth/active_providers' 
+								OR "transaction"='/auth/sign_in' 
+								OR "transaction"='/auth/validate_token' 
+								OR "transaction"='Agent - Reply msg 1' 
+								OR "transaction"='Agent - Reply msg 2' 
+								OR "transaction"='Agent - Reply msg 3' 
+								OR "transaction"='Agent - Reply msg 4' 
+								OR "transaction"='Agent - Reply msg 5' 
+								OR "transaction"='Agent - Welcome msg' 
+								OR "transaction"='Bot - Agent request msg' 
+								OR "transaction"='Bot - Entry msg' 
+								OR "transaction"='Bot - Language menu msg' 
+								OR "transaction"='Client - CSAT answer' 
+								OR "transaction"='Client - Text msg 1' 
+								OR "transaction"='Client - Text msg 2' 
+								OR "transaction"='Client - Text msg 3' 
+								OR "transaction"='Client - Text msg 4' 
+								OR "transaction"='Client - Text msg 5' 
+								OR "transaction"='check conversation status = open' 
+								OR "transaction"='check conversation status = resolved' 
+								OR "transaction"='host/' 
+								OR "transaction"='toggle_status resolved' 
+								OR "transaction"='update_last_seem') 
+						GROUP BY "transaction" 
+						FILL(null))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Request Throughput of all Agent messages spread</name>
+				<query><![CDATA[
+					SELECT SUM("Request Throughput") / COUNT("Request Throughput") 
+						AS "Average Request Throughput of all Agent messages spread" 
+					FROM (SELECT SPREAD("hit") AS "Request Throughput" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ( "transaction"='Agent - Reply msg 1' 
+								OR "transaction"='Agent - Reply msg 2' 
+								OR "transaction"='Agent - Reply msg 3' 
+								OR "transaction"='Agent - Reply msg 4' 
+								OR "transaction"='Agent - Reply msg 5' 
+								OR "transaction"='Agent - Welcome msg') 
+						GROUP BY "transaction" 
+						FILL(null))
+				]]></query>
+			</group>
+        </graph>
+		<graph>
+			<name>Aggregation by interval data spread</name>
+            <group>
+				<name>Average Database query ET spread of mean</name>
+				<query><![CDATA[
+					SELECT SUM("Database query ET") / COUNT("Database query ET") 
+						AS "Average Database query ET spread of mean" 
+					FROM (SELECT SPREAD("avg") AS "Database query ET" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='DB - Get last agent' 
+								OR "transaction"='DB - Get last contact id' 
+								OR "transaction"='DB - Get last conversation id' 
+								OR "transaction"='DB - Get agents tokens') 
+						GROUP BY "transaction", time(interval))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Create Agents ET spread of pct90</name>
+				<query><![CDATA[
+					SELECT SUM("Create Agents ET pct90.0") / COUNT("Create Agents ET pct90.0") 
+						AS "Average Create Agents ET spread of pct90" 
+					FROM (SELECT SPREAD("pct90.0") AS "Create Agents ET pct90.0" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='/api/v1/accounts/{accountId}/agents' 
+								OR "transaction"='/api/v1/accounts/{accountId}/inbox_members' 
+								OR "transaction"='/api/v1/accounts/{accountId}/teams/{teamId}/team_members') 
+						GROUP BY "transaction", time(interval) 
+						FILL(previous))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Log In requests ET spread of pct90</name>
+				<query><![CDATA[
+					SELECT SUM("Log In requests ET pct90 sum") / COUNT("Log In requests ET pct90 sum") 
+						AS "Average Log In requests ET spread of pct90" 
+					FROM ( SELECT SPREAD("pct90.0") AS "Log In requests ET pct90 sum" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='/app/login' 
+								OR "transaction"='/auth/sign_in' 
+								OR "transaction"='host/' 
+								OR "transaction"='/auth/validate_token') 
+						GROUP BY "transaction", time(interval) 
+						FILL(null))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Dashboard requests ET spread of pct90</name>
+				<query><![CDATA[
+					SELECT SUM("Dashboard requests ET pct90 sum") / COUNT("Dashboard requests ET pct90 sum") 
+						AS "Average Dashboard requests ET spread of pct90" 
+					FROM (SELECT sum("mean_pct90.0") AS "Dashboard requests ET pct90 sum" 
+						FROM (SELECT SPREAD("pct90.0") AS "mean_pct90.0" 
+							FROM "db0"."autogen"."jmeter" 
+							WHERE time > 'dateTimeStart' 
+								AND time < 'dateTimeEnd' 
+								AND ("transaction"='/api/v1/accounts/{accountId}/' 
+									OR "transaction"='/api/v1/accounts/{accountId}/notification_settings' 
+									OR "transaction"='/api/v1/accounts/{accountId}/notification_settings/global' 
+									OR "transaction"='/api/v1/accounts/{accountId}/labels' 
+									OR "transaction"='/api/v1/accounts/{accountId}/custom_attribute_definitions' 
+									OR "transaction"='/api/v1/profile/availability' 
+									OR "transaction"='/auth/active_providers' 
+									OR "transaction"='/brand-assets/logo-small.png') 
+							GROUP BY time(7s), "transaction" 
+							FILL(null)) 
+						GROUP BY "transaction", time(interval) 
+						FILL(linear))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Workflow Actions ET spread of pct90</name>
+				<query><![CDATA[
+					SELECT SUM("Conversation Actions ET pct90.0") / COUNT("Conversation Actions ET pct90.0") 
+						AS "Average Workflow Actions ET spread of pct90" 
+					FROM (SELECT SPREAD("pct90.0") AS "Conversation Actions ET pct90.0" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)' 
+								OR "transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)/conversations' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/messages?before={before_number}' 
+								OR "transaction"='/api/v1/accounts/{accountId}/inbox_members/{inboxId}' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/labels' 
+								OR "transaction"='/api/v1/accounts/{accountId}/custom_attribute_definitions?filter=all' 
+								OR "transaction"='/api/v1/accounts/1/dialogs/labels?dialogId[]=(dialog_id)' 
+								OR "transaction"='update_last_seen' 
+								OR "transaction"='check conversation status = open' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations?status=open&assignee_type=me&page=1' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/meta?status=open&assignee_type=me' 
+								OR "transaction"='/api/v1/accounts/(accountId)/conversations/(conv_id)' 
+								OR "transaction"='toggle_status resolved' 
+								OR "transaction"='check conversation status = resolved') 
+						GROUP BY "transaction", time(interval) 
+						FILL(null))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Workflow Actions ET spread of max</name>
+				<query><![CDATA[
+					SELECT SUM("Conversation Actions ET max") / COUNT("Conversation Actions ET max") 
+						AS "Average Workflow Actions ET spread of max" 
+					FROM (SELECT SPREAD("max") AS "Conversation Actions ET max" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)' 
+								OR "transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)/conversations' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/messages?before={before_number}' 
+								OR "transaction"='/api/v1/accounts/{accountId}/inbox_members/{inboxId}' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/labels' 
+								OR "transaction"='/api/v1/accounts/{accountId}/custom_attribute_definitions?filter=all' 
+								OR "transaction"='/api/v1/accounts/1/dialogs/labels?dialogId[]=(dialog_id)' 
+								OR "transaction"='update_last_seen' 
+								OR "transaction"='check conversation status = open' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations?status=open&assignee_type=me&page=1' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/meta?status=open&assignee_type=me' 
+								OR "transaction"='/api/v1/accounts/(accountId)/conversations/(conv_id)' 
+								OR "transaction"='toggle_status resolved' 
+								OR "transaction"='check conversation status = resolved') 
+						GROUP BY "transaction", time(interval) 
+						FILL(null))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Agent Messages ET spread of mean</name>
+				<query><![CDATA[
+					SELECT SUM("Agent Messages ET average") / COUNT("Agent Messages ET average") 
+						AS "Average Agent Messages ET spread of mean" 
+					FROM (SELECT SPREAD("avg") AS "Agent Messages ET average" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='Agent - Reply msg 1' 
+								OR "transaction"='Agent - Reply msg 2' 
+								OR "transaction"='Agent - Reply msg 3' 
+								OR "transaction"='Agent - Reply msg 5' 
+								OR "transaction"='Agent - Reply msg 4' 
+								OR "transaction"='Agent - Welcome msg') 
+							AND ("statut"='ko' 
+								OR "statut"='ok') 
+						GROUP BY "transaction", time(interval) 
+						FILL(null))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Agent Messages ET spread of pct90</name>
+				<query><![CDATA[
+					SELECT SUM("Agent Messages ET pct90") / COUNT("Agent Messages ET pct90") 
+						AS "Average Agent Messages ET spread of pct90" 
+					FROM (SELECT SPREAD("pct90.0") AS "Agent Messages ET pct90" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='Agent - Reply msg 1' 
+								OR "transaction"='Agent - Reply msg 2' 
+								OR "transaction"='Agent - Reply msg 3' 
+								OR "transaction"='Agent - Reply msg 5' 
+								OR "transaction"='Agent - Reply msg 4' 
+								OR "transaction"='Agent - Welcome msg') 
+							AND ("statut"='ko' 
+								OR "statut"='ok') 
+						GROUP BY "transaction", time(interval) 
+						FILL(null))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Agent Messages ET spread of max</name>
+				<query><![CDATA[
+					SELECT SUM("Agent Messages ET max") / COUNT("Agent Messages ET max") 
+						AS "Average Agent Messages ET spread of max" 
+					FROM (SELECT SPREAD("max") AS "Agent Messages ET max" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='Agent - Reply msg 1' 
+								OR "transaction"='Agent - Reply msg 2' 
+								OR "transaction"='Agent - Reply msg 3' 
+								OR "transaction"='Agent - Reply msg 5' 
+								OR "transaction"='Agent - Reply msg 4' 
+								OR "transaction"='Agent - Welcome msg') 
+							AND ("statut"='ko' 
+								OR "statut"='ok') 
+						GROUP BY "transaction", time(interval) 
+						FILL(null))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Client Messages ET spread of mean</name>
+				<query><![CDATA[
+					SELECT SUM("Client Messages ET average") / COUNT("Client Messages ET average") 
+						AS "Average Client Messages ET spread of mean" 
+					FROM (SELECT SPREAD("avg") AS "Client Messages ET average" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='Bot - Agent request msg' 
+								OR "transaction"='Bot - Language menu msg' 
+								OR "transaction"='Bot - Entry msg' 
+								OR "transaction"='Client - CSAT answer' 
+								OR "transaction"='Client - Text msg 1' 
+								OR "transaction"='Client - Text msg 2' 
+								OR "transaction"='Client - Text msg 3' 
+								OR "transaction"='Client - Text msg 4' 
+								OR "transaction"='Client - Text msg 5') 
+							AND ("statut"='ko' OR "statut"='ok') 
+						GROUP BY "transaction", time(interval) 
+						FILL(null))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Client Messages ET spread of pct90</name>
+				<query><![CDATA[
+					SELECT SUM("Client Messages ET pct90") / COUNT("Client Messages ET pct90") 
+						AS "Average Client Messages ET spread of pct90" 
+					FROM (SELECT SPREAD("pct90.0") AS "Client Messages ET pct90" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='Bot - Agent request msg' 
+								OR "transaction"='Bot - Language menu msg' 
+								OR "transaction"='Bot - Entry msg' 
+								OR "transaction"='Client - CSAT answer' 
+								OR "transaction"='Client - Text msg 1' 
+								OR "transaction"='Client - Text msg 2' 
+								OR "transaction"='Client - Text msg 3' 
+								OR "transaction"='Client - Text msg 4' 
+								OR "transaction"='Client - Text msg 5') 
+							AND ("statut"='ko' 
+								OR "statut"='ok') 
+						GROUP BY "transaction", time(interval) 
+						FILL(null))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Client Messages ET spread of max</name>
+				<query><![CDATA[
+					SELECT SUM("Client Messages ET max") / COUNT("Client Messages ET max") 
+						AS "Average Client Messages ET spread of max" 
+					FROM (SELECT SPREAD("max") AS "Client Messages ET max" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='Bot - Agent request msg' 
+								OR "transaction"='Bot - Language menu msg' 
+								OR "transaction"='Bot - Entry msg' 
+								OR "transaction"='Client - CSAT answer' 
+								OR "transaction"='Client - Text msg 1' 
+								OR "transaction"='Client - Text msg 2' 
+								OR "transaction"='Client - Text msg 3' 
+								OR "transaction"='Client - Text msg 4' 
+								OR "transaction"='Client - Text msg 5') 
+							AND ("statut"='ko' 
+								OR "statut"='ok') 
+						GROUP BY "transaction", time(interval) FILL(null))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Request Throughput of all requests spread</name>
+				<query><![CDATA[
+					SELECT SUM("Request Throughput") / COUNT("Request Throughput") 
+						AS "Average Request Throughput of all requests spread" 
+					FROM (SELECT SPREAD("hit") AS "Request Throughput" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='/api/v1/accounts/{accountId}/' 
+								OR "transaction"='/api/v1/accounts/{accountId}/agents' 
+								OR "transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)' 
+								OR "transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)/conversations' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/meta?status=open&assignee_type=me' 
+								OR "transaction"='/api/v1/accounts/(accountId)/conversations/(conv_id)' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/labels' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/messages?before={before_number}' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations?status=open&assignee_type=me&page=1' 
+								OR "transaction"='/api/v1/accounts/{accountId}/dialogs/labels?dialogId[]=(dialog_id)' 
+								OR "transaction"='/api/v1/accounts/{accountId}/custom_attribute_definitions' 
+								OR "transaction"='/api/v1/accounts/{accountId}/custom_filters?filter_type=conversation' 
+								OR "transaction"='/api/v1/accounts/{accountId}/inbox_members' 
+								OR "transaction"='/api/v1/accounts/{accountId}/inbox_members/{inboxId}' 
+								OR "transaction"='/api/v1/accounts/{accountId}/labels' 
+								OR "transaction"='/api/v1/accounts/{accountId}/inboxes' 
+								OR "transaction"='/api/v1/accounts/{accountId}/notification_settings' 
+								OR "transaction"='/api/v1/accounts/{accountId}/notification_settings/global' 
+								OR "transaction"='/api/v1/accounts/{accountId}/notifications/unread_count' 
+								OR "transaction"='/api/v1/accounts/{accountId}/teams' 
+								OR "transaction"='/api/v1/accounts/{accountId}/teams/{teamId}/team_members' 
+								OR "transaction"='/api/v1/notification_subscriptions' 
+								OR "transaction"='/api/v1/profile/availability' 
+								OR "transaction"='/app/login' 
+								OR "transaction"='/auth/active_providers' 
+								OR "transaction"='/auth/sign_in' 
+								OR "transaction"='/auth/validate_token' 
+								OR "transaction"='Agent - Reply msg 1' 
+								OR "transaction"='Agent - Reply msg 2' 
+								OR "transaction"='Agent - Reply msg 3' 
+								OR "transaction"='Agent - Reply msg 4' 
+								OR "transaction"='Agent - Reply msg 5' 
+								OR "transaction"='Agent - Welcome msg' 
+								OR "transaction"='Bot - Agent request msg' 
+								OR "transaction"='Bot - Entry msg' 
+								OR "transaction"='Bot - Language menu msg' 
+								OR "transaction"='Client - CSAT answer' 
+								OR "transaction"='Client - Text msg 1' 
+								OR "transaction"='Client - Text msg 2' 
+								OR "transaction"='Client - Text msg 3' 
+								OR "transaction"='Client - Text msg 4' 
+								OR "transaction"='Client - Text msg 5' 
+								OR "transaction"='check conversation status = open' 
+								OR "transaction"='check conversation status = resolved' 
+								OR "transaction"='host/' 
+								OR "transaction"='toggle_status resolved' 
+								OR "transaction"='update_last_seem') 
+						GROUP BY "transaction", time(interval) 
+						FILL(null))
+				]]></query>
+			</group>
+            <group>
+				<name>Average Request Throughput of all Agent messages spread</name>
+				<query><![CDATA[
+					SELECT SUM("Request Throughput") / COUNT("Request Throughput") 
+						AS "Average Request Throughput of all Agent messages spread" 
+					FROM (SELECT SPREAD("hit") AS "Request Throughput" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ( "transaction"='Agent - Reply msg 1' 
+								OR "transaction"='Agent - Reply msg 2' 
+								OR "transaction"='Agent - Reply msg 3' 
+								OR "transaction"='Agent - Reply msg 4' 
+								OR "transaction"='Agent - Reply msg 5' 
+								OR "transaction"='Agent - Welcome msg') 
+						GROUP BY "transaction", time(interval) 
+						FILL(null))
+				]]></query>
+			</group>
+        </graph>
+		<graph>
+			<name>Aggregation data by transaction</name>
+            <group>
+				<name>Average Database query ET mean by transaction</name>
+				<query><![CDATA[
+					SELECT SUM("Database query ET") / COUNT("Database query ET") 
+						AS "Average Database query ET mean by transaction" 
+					FROM (SELECT mean("avg") AS "Database query ET" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='DB - Get last agent' 
+								OR "transaction"='DB - Get last contact id' 
+								OR "transaction"='DB - Get last conversation id' 
+								OR "transaction"='DB - Get agents tokens') 
+						GROUP BY time(interval)) 
+					GROUP BY "transaction"
+				]]></query>
+			</group>
+            <group>
+				<name>Average Create Agents ET pct90 by transaction</name>
+				<query><![CDATA[
+					SELECT SUM("Create Agents ET pct90.0") / COUNT("Create Agents ET pct90.0") 
+						AS "Average Create Agents ET pct90 by transaction" 
+					FROM (SELECT MEAN("pct90.0") AS "Create Agents ET pct90.0" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='/api/v1/accounts/{accountId}/agents' 
+								OR "transaction"='/api/v1/accounts/{accountId}/inbox_members' 
+								OR "transaction"='/api/v1/accounts/{accountId}/teams/{teamId}/team_members') 
+						GROUP BY time(interval) 
+						FILL(previous)) 
+					GROUP BY "transaction"
+				]]></query>
+			</group>
+            <group>
+				<name>Average Log In requests ET pct90 by transaction</name>
+				<query><![CDATA[
+					SELECT SUM("Log In requests ET pct90 sum") / COUNT("Log In requests ET pct90 sum") 
+						AS "Average Log In requests ET pct90 by transaction" 
+					FROM ( SELECT mean("pct90.0") AS "Log In requests ET pct90 sum" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='/app/login' 
+								OR "transaction"='/auth/sign_in' 
+								OR "transaction"='host/' 
+								OR "transaction"='/auth/validate_token') 
+						GROUP BY time(interval) 
+						FILL(null)) 
+					GROUP BY "transaction"
+				]]></query>
+			</group>
+            <group>
+				<name>Average Dashboard requests ET pct90 by transaction</name>
+				<query><![CDATA[
+					SELECT SUM("Dashboard requests ET pct90 sum") / COUNT("Dashboard requests ET pct90 sum") 
+						AS "Average Dashboard requests ET pct90  by transaction" 
+					FROM (SELECT sum("mean_pct90.0") AS "Dashboard requests ET pct90 sum" 
+						FROM (SELECT mean("pct90.0") AS "mean_pct90.0" 
+							FROM "db0"."autogen"."jmeter" 
+							WHERE time > 'dateTimeStart' 
+								AND time < 'dateTimeEnd' 
+								AND ("transaction"='/api/v1/accounts/{accountId}/' 
+									OR "transaction"='/api/v1/accounts/{accountId}/notification_settings' 
+									OR "transaction"='/api/v1/accounts/{accountId}/notification_settings/global' 
+									OR "transaction"='/api/v1/accounts/{accountId}/labels' 
+									OR "transaction"='/api/v1/accounts/{accountId}/custom_attribute_definitions' 
+									OR "transaction"='/api/v1/profile/availability' 
+									OR "transaction"='/auth/active_providers' 
+									OR "transaction"='/brand-assets/logo-small.png') 
+							GROUP BY time(7s), "transaction" 
+							FILL(null)) 
+						GROUP BY time(interval) 
+						FILL(linear)) 
+					GROUP BY "transaction"
+				]]></query>
+			</group>
+            <group>
+				<name>Average Workflow Actions ET pct90 by transaction</name>
+				<query><![CDATA[
+					SELECT SUM("Workflow Actions ET pct90.0") / COUNT("Workflow Actions ET pct90.0") 
+						AS "Average Workflow Actions ET pct90 by transaction" 
+					FROM (SELECT mean("pct90.0") AS "Workflow Actions ET pct90.0" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)' 
+								OR "transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)/conversations' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/messages?before={before_number}' 
+								OR "transaction"='/api/v1/accounts/{accountId}/inbox_members/{inboxId}' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/labels' 
+								OR "transaction"='/api/v1/accounts/{accountId}/custom_attribute_definitions?filter=all' 
+								OR "transaction"='/api/v1/accounts/1/dialogs/labels?dialogId[]=(dialog_id)' 
+								OR "transaction"='update_last_seen' 
+								OR "transaction"='check conversation status = open' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations?status=open&assignee_type=me&page=1' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/meta?status=open&assignee_type=me' 
+								OR "transaction"='/api/v1/accounts/(accountId)/conversations/(conv_id)' 
+								OR "transaction"='toggle_status resolved' 
+								OR "transaction"='check conversation status = resolved') 
+						GROUP BY time(interval) 
+						FILL(null)) 
+					GROUP BY "transaction"
+				]]></query>
+			</group>
+            <group>
+				<name>Average Workflow Actions ET max by transaction</name>
+				<query><![CDATA[
+					SELECT SUM("Workflow Actions ET max") / COUNT("Workflow Actions ET max") 
+						AS "Average Workflow Actions ET max by transaction" 
+					FROM (SELECT mean("max") AS "Workflow Actions ET max" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)' 
+								OR "transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)/conversations' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/messages?before={before_number}' 
+								OR "transaction"='/api/v1/accounts/{accountId}/inbox_members/{inboxId}' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/labels' 
+								OR "transaction"='/api/v1/accounts/{accountId}/custom_attribute_definitions?filter=all' 
+								OR "transaction"='/api/v1/accounts/1/dialogs/labels?dialogId[]=(dialog_id)' 
+								OR "transaction"='update_last_seen' 
+								OR "transaction"='check conversation status = open' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations?status=open&assignee_type=me&page=1' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/meta?status=open&assignee_type=me' 
+								OR "transaction"='/api/v1/accounts/(accountId)/conversations/(conv_id)' 
+								OR "transaction"='toggle_status resolved' 
+								OR "transaction"='check conversation status = resolved') 
+						GROUP BY time(interval) 
+						FILL(null)) 
+					GROUP BY "transaction"
+				]]></query>
+			</group>
+            <group>
+				<name>Average Agent Messages ET mean by transaction</name>
+				<query><![CDATA[
+					SELECT SUM("Agent Messages ET average") / COUNT("Agent Messages ET average") 
+						AS "Average Agent Messages ET mean by transaction" 
+					FROM (SELECT mean("avg") AS "Agent Messages ET average" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='Agent - Reply msg 1' 
+								OR "transaction"='Agent - Reply msg 2' 
+								OR "transaction"='Agent - Reply msg 3' 
+								OR "transaction"='Agent - Reply msg 5' 
+								OR "transaction"='Agent - Reply msg 4' 
+								OR "transaction"='Agent - Welcome msg') 
+							AND ("statut"='ko' 
+								OR "statut"='ok') 
+						GROUP BY time(interval) 
+						FILL(null)) 
+					GROUP BY "transaction"
+				]]></query>
+			</group>
+            <group>
+				<name>Average Agent Messages ET pct90 by transaction</name>
+				<query><![CDATA[
+					SELECT SUM("Agent Messages ET pct90") / COUNT("Agent Messages ET pct90") 
+						AS "Average Agent Messages ET pct90 by transaction" 
+					FROM (SELECT mean("pct90.0") AS "Agent Messages ET pct90" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='Agent - Reply msg 1' 
+								OR "transaction"='Agent - Reply msg 2' 
+								OR "transaction"='Agent - Reply msg 3' 
+								OR "transaction"='Agent - Reply msg 5' 
+								OR "transaction"='Agent - Reply msg 4' 
+								OR "transaction"='Agent - Welcome msg') 
+							AND ("statut"='ko' 
+								OR "statut"='ok') 
+						GROUP BY time(interval) FILL(null)) 
+					GROUP BY "transaction"
+				]]></query>
+			</group>
+            <group>
+				<name>Average Agent Messages ET max by transaction</name>
+				<query><![CDATA[
+					SELECT SUM("Agent Messages ET max") / COUNT("Agent Messages ET max") 
+						AS "Average Agent Messages ET max by transaction" 
+					FROM (SELECT mean("max") AS "Agent Messages ET max" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='Agent - Reply msg 1' 
+								OR "transaction"='Agent - Reply msg 2' 
+								OR "transaction"='Agent - Reply msg 3' 
+								OR "transaction"='Agent - Reply msg 5' 
+								OR "transaction"='Agent - Reply msg 4' 
+								OR "transaction"='Agent - Welcome msg') 
+							AND ("statut"='ko' 
+								OR "statut"='ok') 
+						GROUP BY time(interval) FILL(null)) 
+					GROUP BY "transaction"
+				]]></query>
+			</group>
+            <group>
+				<name>Average Client Messages ET mean by transaction</name>
+				<query><![CDATA[
+					SELECT SUM("Client Messages ET average") / COUNT("Client Messages ET average") 
+						AS "Average Client Messages ET mean by transaction" 
+					FROM (SELECT mean("avg") AS "Client Messages ET average" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='Bot - Agent request msg' 
+								OR "transaction"='Bot - Language menu msg' 
+								OR "transaction"='Bot - Entry msg' 
+								OR "transaction"='Client - CSAT answer' 
+								OR "transaction"='Client - Text msg 1' 
+								OR "transaction"='Client - Text msg 2' 
+								OR "transaction"='Client - Text msg 3' 
+								OR "transaction"='Client - Text msg 4' 
+								OR "transaction"='Client - Text msg 5') 
+							AND ("statut"='ko' 
+								OR "statut"='ok') 
+						GROUP BY time(interval) FILL(null)) 
+					GROUP BY "transaction"
+				]]></query>
+			</group>
+            <group>
+				<name>Average Client Messages ET pct90 by transaction</name>
+				<query><![CDATA[
+					SELECT SUM("Client Messages ET pct90") / COUNT("Client Messages ET pct90") 
+						AS "Average Client Messages ET pct90 by transaction" 
+					FROM (SELECT mean("pct90.0") AS "Client Messages ET pct90" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='Bot - Agent request msg' 
+								OR "transaction"='Bot - Language menu msg' 
+								OR "transaction"='Bot - Entry msg' 
+								OR "transaction"='Client - CSAT answer' 
+								OR "transaction"='Client - Text msg 1' 
+								OR "transaction"='Client - Text msg 2' 
+								OR "transaction"='Client - Text msg 3' 
+								OR "transaction"='Client - Text msg 4' 
+								OR "transaction"='Client - Text msg 5') 
+							AND ("statut"='ko' 
+								OR "statut"='ok') 
+						GROUP BY time(interval) FILL(null)) 
+					GROUP BY "transaction"
+				]]></query>
+			</group>
+            <group>
+				<name>Average Client Messages ET max by transaction</name>
+				<query><![CDATA[
+					SELECT SUM("Client Messages ET max") / COUNT("Client Messages ET max") 
+						AS "Average Client Messages ET max by transaction" 
+					FROM (SELECT mean("max") AS "Client Messages ET max" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='Bot - Agent request msg' 
+								OR "transaction"='Bot - Language menu msg' 
+								OR "transaction"='Bot - Entry msg' 
+								OR "transaction"='Client - CSAT answer' 
+								OR "transaction"='Client - Text msg 1' 
+								OR "transaction"='Client - Text msg 2' 
+								OR "transaction"='Client - Text msg 3' 
+									OR "transaction"='Client - Text msg 4' 
+									OR "transaction"='Client - Text msg 5') 
+							AND ("statut"='ko' 
+								OR "statut"='ok') 
+						GROUP BY time(interval) 
+						FILL(null)) 
+					GROUP BY "transaction"
+				]]></query>
+			</group>
+            <group>
+				<name>Average Request Throughput of all requests by transaction</name>
+				<query><![CDATA[
+					SELECT SUM("Request Throughput") / COUNT("Request Throughput") 
+						AS "Average Request Throughput of all requests by transaction" 
+					FROM (SELECT mean("hit") AS "Request Throughput" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='/api/v1/accounts/{accountId}/' 
+								OR "transaction"='/api/v1/accounts/{accountId}/agents' 
+								OR "transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)' 
+								OR "transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)/conversations' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/meta?status=open&assignee_type=me' 
+								OR "transaction"='/api/v1/accounts/(accountId)/conversations/(conv_id)' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/labels' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/messages?before={before_number}' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations?status=open&assignee_type=me&page=1' 
+								OR "transaction"='/api/v1/accounts/{accountId}/dialogs/labels?dialogId[]=(dialog_id)' 
+								OR "transaction"='/api/v1/accounts/{accountId}/custom_attribute_definitions' 
+								OR "transaction"='/api/v1/accounts/{accountId}/custom_filters?filter_type=conversation' 
+								OR "transaction"='/api/v1/accounts/{accountId}/inbox_members' 
+								OR "transaction"='/api/v1/accounts/{accountId}/inbox_members/{inboxId}' 
+								OR "transaction"='/api/v1/accounts/{accountId}/labels' 
+								OR "transaction"='/api/v1/accounts/{accountId}/inboxes' 
+								OR "transaction"='/api/v1/accounts/{accountId}/notification_settings' 
+								OR "transaction"='/api/v1/accounts/{accountId}/notification_settings/global' 
+								OR "transaction"='/api/v1/accounts/{accountId}/notifications/unread_count' 
+								OR "transaction"='/api/v1/accounts/{accountId}/teams' 
+								OR "transaction"='/api/v1/accounts/{accountId}/teams/{teamId}/team_members' 
+								OR "transaction"='/api/v1/notification_subscriptions' 
+								OR "transaction"='/api/v1/profile/availability' 
+								OR "transaction"='/app/login' 
+								OR "transaction"='/auth/active_providers' 
+								OR "transaction"='/auth/sign_in' 
+								OR "transaction"='/auth/validate_token' 
+								OR "transaction"='Agent - Reply msg 1' 
+								OR "transaction"='Agent - Reply msg 2' 
+								OR "transaction"='Agent - Reply msg 3' 
+								OR "transaction"='Agent - Reply msg 4' 
+								OR "transaction"='Agent - Reply msg 5' 
+								OR "transaction"='Agent - Welcome msg' 
+								OR "transaction"='Bot - Agent request msg' 
+								OR "transaction"='Bot - Entry msg' 
+								OR "transaction"='Bot - Language menu msg' 
+								OR "transaction"='Client - CSAT answer' 
+								OR "transaction"='Client - Text msg 1' 
+								OR "transaction"='Client - Text msg 2' 
+								OR "transaction"='Client - Text msg 3' 
+								OR "transaction"='Client - Text msg 4' 
+								OR "transaction"='Client - Text msg 5' 
+								OR "transaction"='check conversation status = open' 
+								OR "transaction"='check conversation status = resolved' 
+								OR "transaction"='host/' 
+								OR "transaction"='toggle_status resolved' 
+								OR "transaction"='update_last_seem') 
+						GROUP BY time(interval) 
+						FILL(null)) 
+					GROUP BY "transaction"
+				]]></query>
+			</group>
+            <group>
+				<name>Average Request Throughput of all Agent messages by transaction</name>
+				<query><![CDATA[
+					SELECT SUM("Request Throughput") / COUNT("Request Throughput") 
+						AS "Average Request Throughput of all Agent messages by transaction" 
+					FROM (SELECT mean("hit") AS "Request Throughput" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ( "transaction"='Agent - Reply msg 1' 
+								OR "transaction"='Agent - Reply msg 2' 
+								OR "transaction"='Agent - Reply msg 3' 
+								OR "transaction"='Agent - Reply msg 4' 
+								OR "transaction"='Agent - Reply msg 5' 
+								OR "transaction"='Agent - Welcome msg') 
+						GROUP BY time(interval) 
+						FILL(null)) 
+					GROUP BY "transaction"
+				]]></query>
+			</group>
+            <group>
+				<name>Total Errors by transaction</name>
+				<query><![CDATA[
+					SELECT sum("hit") AS "Total Errors by transaction"
+					FROM "db0"."autogen"."jmeter"
+					WHERE time > 'dateTimeStart'
+						AND time < 'dateTimeEnd'
+						AND "statut"='ko'
+						AND ("transaction"='Client - Text msg 5'
+							OR "transaction"='Client - Text msg 4'
+							OR "transaction"='Client - Text msg 3'
+							OR "transaction"='Client - Text msg 2'
+							OR "transaction"='Client - Text msg 1'
+							OR "transaction"='Client - CSAT answer'
+							OR "transaction"='Bot - Agent request msg'
+							OR "transaction"='Bot - Entry msg'
+							OR "transaction"='Bot - Language menu msg'
+							OR "transaction"='Agent - Reply msg 1'
+							OR "transaction"='Agent - Reply msg 2'
+							OR "transaction"='Agent - Reply msg 3'
+							OR "transaction"='Agent - Reply msg 4'
+							OR "transaction"='Agent - Reply msg 5'
+							OR "transaction"='Agent - Welcome msg'
+							OR "transaction"='/api/v1/accounts/{accountId}/'
+							OR "transaction"='/api/v1/accounts/{accountId}/agents'
+							OR "transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)'
+							OR "transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)/conversations'
+							OR "transaction"='/api/v1/accounts/{accountId}/conversations/meta?status=open&assignee_type=me'
+							OR "transaction"='/api/v1/accounts/(accountId)/conversations/(conv_id)'
+							OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/labels'
+							OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/messages?before={before_number}'
+							OR "transaction"='/api/v1/accounts/{accountId}/conversations?status=open&assignee_type=me&page=1'
+							OR "transaction"='/api/v1/accounts/{accountId}/dialogs/labels?dialogId[]=(dialog_id)'
+							OR "transaction"='/api/v1/accounts/{accountId}/custom_attribute_definitions?filter=all'
+							OR "transaction"='/api/v1/accounts/{accountId}/custom_filters?filter_type=conversation'
+							OR "transaction"='/api/v1/accounts/{accountId}/inbox_members'
+							OR "transaction"='/api/v1/accounts/{accountId}/inbox_members/{inboxId}'
+							OR "transaction"='/api/v1/accounts/{accountId}/inboxes'
+							OR "transaction"='/api/v1/accounts/{accountId}/labels'
+							OR "transaction"='/api/v1/accounts/{accountId}/notification_settings'
+							OR "transaction"='/api/v1/accounts/{accountId}/notification_settings/global'
+							OR "transaction"='/api/v1/accounts/{accountId}/notifications/unread_count'
+							OR "transaction"='/api/v1/accounts/{accountId}/teams'
+							OR "transaction"='/api/v1/notification_subscriptions'
+							OR "transaction"='/api/v1/accounts/{accountId}/teams/{teamId}/team_members'
+							OR "transaction"='/api/v1/profile/availability'
+							OR "transaction"='/app/login'
+							OR "transaction"='/auth/validate_token'
+							OR "transaction"='/auth/sign_in'
+							OR "transaction"='/auth/active_providers'
+							OR "transaction"='check conversation status = open'
+							OR "transaction"='check conversation status = resolved'
+							OR "transaction"='toggle_status resolved'
+							OR "transaction"='update_last_seen'
+							OR "transaction"='host/'
+							OR "transaction"='DB - Get last conversation id'
+							OR "transaction"='DB - Get last contact id'
+							OR "transaction"='DB - Get last agent'
+							OR "transaction"='DB - Get agents tokens'
+							OR "transaction"='/brand-assets/logo-small.png')
+					GROUP BY "transaction"
+					FILL(null)
+				]]></query>
+			</group>
+        </graph>
+    <graph>
+        <name>Aggregation data spread by transaction</name>
+            <group>
+				<name>Average Create Agents ET pct90 spread by transaction</name>
+				<query><![CDATA[
+					SELECT SPREAD("Create Agents ET mean pct90") 
+						AS "Average Create Agents ET pct90 spread by transaction" 
+					FROM (SELECT MEAN("pct90.0") AS "Create Agents ET mean pct90" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='/api/v1/accounts/{accountId}/agents' 
+								OR "transaction"='/api/v1/accounts/{accountId}/inbox_members' 
+								OR "transaction"='/api/v1/accounts/{accountId}/teams/{teamId}/team_members') 
+						GROUP BY time(interval) FILL(previous)) 
+					GROUP BY "transaction"
+				]]></query>
+			</group>
+            <group>
+				<name>Average Log In requests ET pct90 spread by transaction</name>
+				<query><![CDATA[
+					SELECT SPREAD("Log In requests ET mean pct90") 
+						AS "Average Log In requests ET pct90 spread by transaction" 
+					FROM ( SELECT MEAN("pct90.0") AS "Log In requests ET mean pct90" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='/app/login' 
+								OR "transaction"='/auth/sign_in' 
+								OR "transaction"='host/' 
+								OR "transaction"='/auth/validate_token') 
+						GROUP BY time(interval) FILL(null)) 
+					GROUP BY "transaction"
+				]]></query>
+			</group>
+            <group>
+				<name>Average Dashboard requests ET pct90 spread by transaction</name>
+				<query><![CDATA[
+					SELECT SPREAD("Dashboard requests ET mean pct90") 
+						AS "Average Dashboard requests ET pct90 spread by transaction" 
+					FROM (SELECT MEAN("pct90.0") AS "Dashboard requests ET mean pct90" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='/api/v1/accounts/{accountId}/' 
+								OR "transaction"='/api/v1/accounts/{accountId}/notification_settings' 
+								OR "transaction"='/api/v1/accounts/{accountId}/notification_settings/global' 
+								OR "transaction"='/api/v1/accounts/{accountId}/labels' 
+								OR "transaction"='/api/v1/accounts/{accountId}/custom_attribute_definitions' 
+								OR "transaction"='/api/v1/profile/availability' 
+								OR "transaction"='/auth/active_providers' 
+								OR "transaction"='/brand-assets/logo-small.png') 
+						GROUP BY time(7s) 
+						FILL(null)) 
+					GROUP BY "transaction" 
+					FILL(linear)
+				]]></query>
+			</group>
+            <group>
+				<name>Average Workflow Actions ET pct90 spread by transaction</name>
+				<query><![CDATA[
+					SELECT SPREAD("Conversation Actions ET mean pct90") 
+						AS "Average Workflow Actions ET pct90 spread by transaction" 
+					FROM (SELECT MEAN("pct90.0") AS "Conversation Actions ET mean pct90" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart'  
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)' 
+								OR "transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)/conversations' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/messages?before={before_number}' 
+								OR "transaction"='/api/v1/accounts/{accountId}/inbox_members/{inboxId}' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/labels' 
+								OR "transaction"='/api/v1/accounts/{accountId}/custom_attribute_definitions?filter=all' 
+								OR "transaction"='/api/v1/accounts/1/dialogs/labels?dialogId[]=(dialog_id)' 
+								OR "transaction"='update_last_seen' 
+								OR "transaction"='check conversation status = open' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations?status=open&assignee_type=me&page=1' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/meta?status=open&assignee_type=me'
+								OR "transaction"='/api/v1/accounts/(accountId)/conversations/(conv_id)' 
+								OR "transaction"='toggle_status resolved' 
+								OR "transaction"='check conversation status = resolved') 
+						GROUP BY time(interval) 
+						FILL(null)) 
+					GROUP BY "transaction"
+				]]></query>
+			</group>
+            <group>
+				<name>Average Workflow Actions ET max spread by transaction</name>
+				<query><![CDATA[
+					SELECT SPREAD("Conversation Actions ET mean max") 
+						AS "Average Workflow Actions ET max spread by transaction" 
+					FROM (SELECT MEAN("max") AS "Conversation Actions ET mean max" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)' 
+								OR "transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)/conversations' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/messages?before={before_number}' 
+								OR "transaction"='/api/v1/accounts/{accountId}/inbox_members/{inboxId}' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/labels' 
+								OR "transaction"='/api/v1/accounts/{accountId}/custom_attribute_definitions?filter=all' 
+								OR "transaction"='/api/v1/accounts/1/dialogs/labels?dialogId[]=(dialog_id)' 
+								OR "transaction"='update_last_seen' 
+								OR "transaction"='check conversation status = open' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations?status=open&assignee_type=me&page=1' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/meta?status=open&assignee_type=me' 
+								OR "transaction"='/api/v1/accounts/(accountId)/conversations/(conv_id)' 
+								OR "transaction"='toggle_status resolved' 
+								OR "transaction"='check conversation status = resolved') 
+						GROUP BY time(interval) 
+						FILL(null)) 
+					GROUP BY "transaction"
+				]]></query>
+			</group>
+            <group>
+				<name>Average Agent Messages ET mean spread by transaction</name>
+				<query><![CDATA[
+					SELECT SPREAD("Agent Messages ET average") 
+						AS "Average Agent Messages ET mean spread by transaction" 
+					FROM (SELECT MEAN("avg") AS "Agent Messages ET average" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='Agent - Reply msg 1' 
+								OR "transaction"='Agent - Reply msg 2' 
+								OR "transaction"='Agent - Reply msg 3' 
+								OR "transaction"='Agent - Reply msg 5' 
+								OR "transaction"='Agent - Reply msg 4' 
+								OR "transaction"='Agent - Welcome msg') 
+							AND ("statut"='ko' 
+								OR "statut"='ok') 
+						GROUP BY time(interval) 
+						FILL(null)) 
+					GROUP BY "transaction"
+				]]></query>
+			</group>
+            <group>
+				<name>Average Agent Messages ET pct90 spread by transaction</name>
+				<query><![CDATA[
+					SELECT SPREAD("Agent Messages ET pct90") 
+						AS "Average Agent Messages ET pct90 spread by transaction" 
+					FROM (SELECT MEAN("pct90.0") AS "Agent Messages ET pct90" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='Agent - Reply msg 1' 
+								OR "transaction"='Agent - Reply msg 2' 
+								OR "transaction"='Agent - Reply msg 3' 
+								OR "transaction"='Agent - Reply msg 5' 
+								OR "transaction"='Agent - Reply msg 4' 
+								OR "transaction"='Agent - Welcome msg') 
+							AND ("statut"='ko' 
+								OR "statut"='ok') 
+						GROUP BY time(interval) 
+						FILL(null)) 
+					GROUP BY "transaction"
+				]]></query>
+			</group>
+            <group>
+				<name>Average Agent Messages ET max spread by transaction</name>
+				<query><![CDATA[
+					SELECT SPREAD("Agent Messages ET max") 
+						AS "Average Agent Messages ET max spread by transaction" 
+					FROM (SELECT MEAN("max") AS "Agent Messages ET max" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='Agent - Reply msg 1' 
+								OR "transaction"='Agent - Reply msg 2' 
+								OR "transaction"='Agent - Reply msg 3' 
+								OR "transaction"='Agent - Reply msg 5' 
+								OR "transaction"='Agent - Reply msg 4' 
+								OR "transaction"='Agent - Welcome msg') 
+							AND ("statut"='ko' OR "statut"='ok') 
+						GROUP BY time(interval) 
+						FILL(null)) 
+					GROUP BY "transaction"
+				]]></query>
+			</group>
+            <group>
+				<name>Average Client Messages ET mean spread by transaction</name>
+				<query><![CDATA[
+					SELECT SPREAD("Client Messages ET average") 
+						AS "Average Client Messages ET mean spread by transaction" 
+					FROM (SELECT MEAN("avg") AS "Client Messages ET average" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='Bot - Agent request msg' 
+								OR "transaction"='Bot - Language menu msg' 
+								OR "transaction"='Bot - Entry msg' 
+								OR "transaction"='Client - CSAT answer' 
+								OR "transaction"='Client - Text msg 1' 
+								OR "transaction"='Client - Text msg 2' 
+								OR "transaction"='Client - Text msg 3' 
+								OR "transaction"='Client - Text msg 4' 
+								OR "transaction"='Client - Text msg 5') 
+							AND ("statut"='ko' 
+								OR "statut"='ok') 
+						GROUP BY time(interval) 
+						FILL(null)) 
+					GROUP BY "transaction"
+				]]></query>
+			</group>
+            <group>
+				<name>Average Client Messages ET pct90 spread by transaction</name>
+				<query><![CDATA[
+					SELECT SPREAD("Client Messages ET pct90") 
+						AS "Average Client Messages ET pct90 spread by transaction" 
+					FROM (SELECT MEAN("pct90.0") AS "Client Messages ET pct90" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='Bot - Agent request msg' 
+								OR "transaction"='Bot - Language menu msg' 
+								OR "transaction"='Bot - Entry msg' 
+								OR "transaction"='Client - CSAT answer' 
+								OR "transaction"='Client - Text msg 1' 
+								OR "transaction"='Client - Text msg 2' 
+								OR "transaction"='Client - Text msg 3' 
+								OR "transaction"='Client - Text msg 4' 
+								OR "transaction"='Client - Text msg 5') 
+							AND ("statut"='ko' 
+								OR "statut"='ok') 
+						GROUP BY time(interval) 
+						FILL(null)) 
+					GROUP BY "transaction"
+				]]></query>
+			</group>
+            <group>
+				<name>Average Client Messages ET max spread by transaction</name>
+				<query><![CDATA[
+					SELECT SPREAD("Client Messages ET max") 
+						AS "Average Client Messages ET max spread by transaction" 
+					FROM (SELECT MEAN("max") AS "Client Messages ET max" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='Bot - Agent request msg' 
+								OR "transaction"='Bot - Language menu msg' 
+								OR "transaction"='Bot - Entry msg' 
+								OR "transaction"='Client - CSAT answer' 
+								OR "transaction"='Client - Text msg 1' 
+								OR "transaction"='Client - Text msg 2' 
+								OR "transaction"='Client - Text msg 3' 
+								OR "transaction"='Client - Text msg 4' 
+								OR "transaction"='Client - Text msg 5') 
+							AND ("statut"='ko' 
+								OR "statut"='ok') 
+						GROUP BY time(interval) 
+						FILL(null)) 
+					GROUP BY "transaction"
+				]]></query>
+			</group>
+            <group>
+				<name>Average Request Throughput of all requests spread by transaction</name>
+				<query><![CDATA[
+					SELECT SPREAD("Request Throughput") 
+						AS "Average Request Throughput of all requests spread by transaction" 
+					FROM (SELECT MEAN("hit") AS "Request Throughput" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ("transaction"='/api/v1/accounts/{accountId}/' 
+								OR "transaction"='/api/v1/accounts/{accountId}/agents' 
+								OR "transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)' 
+								OR "transaction"='/api/v1/accounts/{accountId}/contacts/(cont_id)/conversations' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/meta?status=open&assignee_type=me' 
+								OR "transaction"='/api/v1/accounts/(accountId)/conversations/(conv_id)' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/labels' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations/{conv_id}/messages?before={before_number}' 
+								OR "transaction"='/api/v1/accounts/{accountId}/conversations?status=open&assignee_type=me&page=1' 
+								OR "transaction"='/api/v1/accounts/{accountId}/dialogs/labels?dialogId[]=(dialog_id)' 
+								OR "transaction"='/api/v1/accounts/{accountId}/custom_attribute_definitions' 
+								OR "transaction"='/api/v1/accounts/{accountId}/custom_filters?filter_type=conversation' 
+								OR "transaction"='/api/v1/accounts/{accountId}/inbox_members' 
+								OR "transaction"='/api/v1/accounts/{accountId}/inbox_members/{inboxId}' 
+								OR "transaction"='/api/v1/accounts/{accountId}/labels' 
+								OR "transaction"='/api/v1/accounts/{accountId}/inboxes' 
+								OR "transaction"='/api/v1/accounts/{accountId}/notification_settings' 
+								OR "transaction"='/api/v1/accounts/{accountId}/notification_settings/global' 
+								OR "transaction"='/api/v1/accounts/{accountId}/notifications/unread_count' 
+								OR "transaction"='/api/v1/accounts/{accountId}/teams' 
+								OR "transaction"='/api/v1/accounts/{accountId}/teams/{teamId}/team_members' 
+								OR "transaction"='/api/v1/notification_subscriptions' 
+								OR "transaction"='/api/v1/profile/availability' 
+								OR "transaction"='/app/login' 
+								OR "transaction"='/auth/active_providers' 
+								OR "transaction"='/auth/sign_in' 
+								OR "transaction"='/auth/validate_token' 
+								OR "transaction"='Agent - Reply msg 1' 
+								OR "transaction"='Agent - Reply msg 2' 
+								OR "transaction"='Agent - Reply msg 3' 
+								OR "transaction"='Agent - Reply msg 4' 
+								OR "transaction"='Agent - Reply msg 5' 
+								OR "transaction"='Agent - Welcome msg' 
+								OR "transaction"='Bot - Agent request msg' 
+								OR "transaction"='Bot - Entry msg' 
+								OR "transaction"='Bot - Language menu msg' 
+								OR "transaction"='Client - CSAT answer' 
+								OR "transaction"='Client - Text msg 1' 
+								OR "transaction"='Client - Text msg 2' 
+								OR "transaction"='Client - Text msg 3' 
+								OR "transaction"='Client - Text msg 4' 
+								OR "transaction"='Client - Text msg 5' 
+								OR "transaction"='check conversation status = open' 
+								OR "transaction"='check conversation status = resolved' 
+								OR "transaction"='host/' 
+								OR "transaction"='toggle_status resolved' 
+								OR "transaction"='update_last_seem') 
+						GROUP BY time(interval) 
+						FILL(null)) 
+					GROUP BY "transaction"
+				]]></query>
+			</group>
+            <group>
+				<name>Average Request Throughput of all Agent messages spread by transaction</name>
+				<query><![CDATA[
+					SELECT SPREAD("Request Throughput") 
+						AS "Average Request Throughput of all requests spread by transaction" 
+					FROM (SELECT MEAN("hit") AS "Request Throughput" 
+						FROM "db0"."autogen"."jmeter" 
+						WHERE time > 'dateTimeStart' 
+							AND time < 'dateTimeEnd' 
+							AND ( "transaction"='Agent - Reply msg 1' 
+								OR "transaction"='Agent - Reply msg 2' 
+								OR "transaction"='Agent - Reply msg 3' 
+								OR "transaction"='Agent - Reply msg 4' 
+								OR "transaction"='Agent - Reply msg 5' 
+								OR "transaction"='Agent - Welcome msg') 
+						GROUP BY time(interval) 
+						FILL(null)) 
+					GROUP BY "transaction"
+				]]></query>
+			</group>
+        </graph>
+    </type>
+
+    <type>
+		<category>Meta</category>
+		<graph>
+			<name>Agent Activity</name>
+            <group>
+				<name>Agent Conversation Activity</name>
+				<query><![CDATA[
+					SELECT mean("isActive") 
+						AS "Agent Conversation Activity"
+					FROM "db0"."autogen"."agent_activity" 
+					WHERE time > 'dateTimeStart' 
+						AND time < 'dateTimeEnd' 
+						AND "agentNum"='ActivityPercentage' 
+					GROUP BY time(interval) FILL(null)
+				]]></query>
+			</group>
+        </graph>
+		<graph>
+			<name>Database Connections</name>
+            <group>
+				<name>Postgres Connections</name>
+				<query><![CDATA[
+					SELECT mean("connections") 
+						AS "Postgres Connections"  
+					FROM "db0"."autogen"."db_connections" 
+					WHERE time > 'dateTimeStart' 
+						AND time < 'dateTimeEnd' 
+						AND "name"='postgres' 
+					GROUP BY time(interval) 
+					FILL(null)
+				]]></query>
+			</group>
+        </graph>
+    </type>
+</root>
